@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\AuthenticatedController;
-use App\Http\Controllers\API\AuthenticatedControllerGuru;
-use App\Http\Controllers\GuruController;
+use App\Http\Controllers\API\AuthenticatedControllerDosen;
+use App\Http\Controllers\DosenController;
 use App\Http\Controllers\MataPelajaranController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TugasController;
@@ -45,24 +45,24 @@ Route::post('/auth/refresh', [AuthenticatedController::class, 'refresh']);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('siswa', SiswaController::class);
 });
-// Siswa
+// Mahasiswa
 
-// Guru
-Route::get('/auth/guru', [GuruController::class, 'index']);
-Route::get('/auth/edit-guru/{id}', [GuruController::class, 'show']);
-Route::put('/auth/update-guru/{id}', [GuruController::class, 'update']);
-Route::delete('/auth/hapus-guru/{id}', [GuruController::class, 'destroy']);
-Route::post('/auth/register-guru', [GuruController::class, 'register']);
+// Dosen
+Route::get('/auth/dosen', [DosenController::class, 'index']);
+Route::get('/auth/edit-dosen/{id}', [DosenController::class, 'show']);
+Route::put('/auth/update-dosen/{id}', [DosenController::class, 'update']);
+Route::delete('/auth/hapus-dosen/{id}', [DosenController::class, 'destroy']);
+Route::post('/auth/register-dosen', [DosenController::class, 'register']);
 
-Route::post('/auth/gurume', [AuthenticatedControllerGuru::class, 'me']);
-Route::post('/auth/gurulogin', [AuthenticatedControllerGuru::class, 'login']);
-Route::post('/auth/gurulogout', [AuthenticatedControllerGuru::class, 'logout']);
-Route::post('/auth/gururefresh', [AuthenticatedControllerGuru::class, 'refresh']);
+Route::post('/auth/dosenme', [AuthenticatedControllerDosen::class, 'me']);
+Route::post('/auth/dosen-login', [AuthenticatedControllerDosen::class, 'login']);
+Route::post('/auth/dosen-logout', [AuthenticatedControllerDosen::class, 'logout']);
+Route::post('/auth/dosen-refresh', [AuthenticatedControllerDosen::class, 'refresh']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::apiResource('guru', GuruController::class);
+    Route::apiResource('dosen', DosenController::class);
 });
-// Guru
+// Dosen
 
 // Mata Pelajaran
 Route::get('/mapel', [MataPelajaranController::class, 'index']);

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\guru;
+use App\Models\Dosen;
 use Illuminate\Http\Request;
-use App\Http\Resources\GuruResource;
+use App\Http\Resources\DosenResource;
 use App\Http\Controllers\API\BaseController;
 
-class GuruController extends BaseController
+class DosenController extends BaseController
 {
     const VALIDATION_RULES = [
         'nama' => 'required|string|max:255',
-        'nip' => 'required|string|max:255',
+        'nidn' => 'required|string|max:255',
         'email' => 'required|string|max:255',
         'password' => 'required|string|max:255',
         'tempat' => 'required|string|max:255',
@@ -31,8 +31,8 @@ class GuruController extends BaseController
     public function index()
     {
         try {
-            $guru = (GuruResource::collection(Guru::all()));
-            return $this->sendResponse($guru, "guru retrieved successfully");
+            $dosen = (DosenResource::collection(Dosen::all()));
+            return $this->sendResponse($dosen, "guru retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error guru retrieved successfully", $th->getMessage());
         }
@@ -48,21 +48,21 @@ class GuruController extends BaseController
     {
         try {
             $this->validate($request, self::VALIDATION_RULES);
-            $guru = new guru;
-            $guru->nama = $request->nama;
-            $guru->nip = $request->nip;
-            $guru->email = $request->email;
-            $guru->password = bcrypt($request->password);
-            $guru->tempat = $request->tempat;
-            $guru->tgl_lahir = $request->tgl_lahir;
-            $guru->jns_kelamin = $request->jns_kelamin;
-            $guru->agama = $request->agama;
-            $guru->alamat = $request->alamat;
-            $guru->telepon = $request->telepon;
-            $guru->kd_pos = $request->kd_pos;
-            $guru->save();
+            $dosen = new Dosen;
+            $dosen->nama = $request->nama;
+            $dosen->nidn = $request->nidn;
+            $dosen->email = $request->email;
+            $dosen->password = bcrypt($request->password);
+            $dosen->tempat = $request->tempat;
+            $dosen->tgl_lahir = $request->tgl_lahir;
+            $dosen->jns_kelamin = $request->jns_kelamin;
+            $dosen->agama = $request->agama;
+            $dosen->alamat = $request->alamat;
+            $dosen->telepon = $request->telepon;
+            $dosen->kd_pos = $request->kd_pos;
+            $dosen->save();
 
-            return $this->sendResponse(new GuruResource($guru), 'guru created successfully');
+            return $this->sendResponse(new DosenResource($dosen), 'guru created successfully');
         } catch (\Throwable $th) {
             return $this->sendError('error creating guru', $th->getMessage());
         }
@@ -71,14 +71,14 @@ class GuruController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\guru  $guru
+     * @param  \App\Models\Dosen  $dosen
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         try {
-            $guru = Guru::findOrFail($id);
-            return $this->sendResponse(new GuruResource($guru), "guru retrieved successfully");
+            $dosen = Dosen::findOrFail($id);
+            return $this->sendResponse(new DosenResource($dosen), "guru retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving guru", $th->getMessage());
         }
@@ -88,7 +88,7 @@ class GuruController extends BaseController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\guru  $guru
+     * @param  \App\Models\Dosen  $dosen
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -96,7 +96,7 @@ class GuruController extends BaseController
         try {
             $request->validate([
                 'nama' => 'required|string|max:255',
-                'nip' => 'required|string|max:255',
+                'nidn' => 'required|string|max:255',
                 'email' => 'required|string|max:255',
                 'tempat' => 'required|string|max:255',
                 'tgl_lahir' => 'required|date',
@@ -106,19 +106,19 @@ class GuruController extends BaseController
                 'telepon' => 'required|string|max:255',
                 'kd_pos' => 'required|string|max:255',
             ]);
-            $guru = Guru::findOrFail($id);
-            $guru->nama = $request->nama;
-            $guru->nip = $request->nip;
-            $guru->email = $request->email;
-            $guru->tempat = $request->tempat;
-            $guru->tgl_lahir = $request->tgl_lahir;
-            $guru->jns_kelamin = $request->jns_kelamin;
-            $guru->agama = $request->agama;
-            $guru->alamat = $request->alamat;
-            $guru->telepon = $request->telepon;
-            $guru->kd_pos = $request->kd_pos;
-            $guru->save();
-            return $this->sendResponse($guru, 'guru updated successfully');
+            $dosen = Dosen::findOrFail($id);
+            $dosen->nama = $request->nama;
+            $dosen->nidn = $request->nidn;
+            $dosen->email = $request->email;
+            $dosen->tempat = $request->tempat;
+            $dosen->tgl_lahir = $request->tgl_lahir;
+            $dosen->jns_kelamin = $request->jns_kelamin;
+            $dosen->agama = $request->agama;
+            $dosen->alamat = $request->alamat;
+            $dosen->telepon = $request->telepon;
+            $dosen->kd_pos = $request->kd_pos;
+            $dosen->save();
+            return $this->sendResponse($dosen, 'guru updated successfully');
         } catch (\Throwable $th) {
             return $this->sendError('error updating guru', $th->getMessage());
         }
@@ -127,15 +127,15 @@ class GuruController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\guru  $guru
+     * @param  \App\Models\Dosen  $dosen
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         try {
-            $guru = Guru::findOrFail($id);
-            $guru->delete();
-            return $this->sendResponse($guru, "guru deleted successfully");
+            $dosen = Dosen::findOrFail($id);
+            $dosen->delete();
+            return $this->sendResponse($dosen, "guru deleted successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error deleting guru", $th->getMessage());
         }
@@ -145,20 +145,20 @@ class GuruController extends BaseController
     {
         try {
             $this->validate($request, self::VALIDATION_RULES);
-            $guru = new Guru;
-            $guru->nama = $request->nama;
-            $guru->nip = $request->nip;
-            $guru->email = $request->email;
-            $guru->password = bcrypt($request->password);
-            $guru->tempat = $request->tempat;
-            $guru->tgl_lahir = $request->tgl_lahir;
-            $guru->jns_kelamin = $request->jns_kelamin;
-            $guru->agama = $request->agama;
-            $guru->alamat = $request->alamat;
-            $guru->telepon = $request->telepon;
-            $guru->kd_pos = $request->kd_pos;
-            $guru->save();
-            return $this->sendResponse(new GuruResource($guru), 'guru created successfully');
+            $dosen = new Dosen;
+            $dosen->nama = $request->nama;
+            $dosen->nidn = $request->nidn;
+            $dosen->email = $request->email;
+            $dosen->password = bcrypt($request->password);
+            $dosen->tempat = $request->tempat;
+            $dosen->tgl_lahir = $request->tgl_lahir;
+            $dosen->jns_kelamin = $request->jns_kelamin;
+            $dosen->agama = $request->agama;
+            $dosen->alamat = $request->alamat;
+            $dosen->telepon = $request->telepon;
+            $dosen->kd_pos = $request->kd_pos;
+            $dosen->save();
+            return $this->sendResponse(new DosenResource($dosen), 'guru created successfully');
         } catch (\Throwable $th) {
             return $this->sendError('error creating guru', $th->getMessage());
         }

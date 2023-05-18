@@ -8,14 +8,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Siswa extends Authenticatable implements JWTSubject
+class Mahasiswa extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory;
 
-    protected $table = 'siswas';
+    protected $table = 'mahasiswas';
 
     protected $fillable = [
-        'idSiswa',
+        'idMahasiswa',
         'idKelas',
         'nama',
         'nim',
@@ -34,7 +34,7 @@ class Siswa extends Authenticatable implements JWTSubject
         'updated_at',
     ];
 
-    protected $primaryKey = 'idSiswa';
+    protected $primaryKey = 'idMahasiswa';
 
     // Penting untuk tim lemon!!!
     // Penjelasan : yang di comment ini untuk template pembuatan migration
@@ -53,7 +53,7 @@ class Siswa extends Authenticatable implements JWTSubject
 
     public function tugasMurid()
     {
-        return $this->hasMany(TugasMurid::class, 'idSiswa', 'idSiswa');
+        return $this->hasMany(TugasMurid::class, 'idMahasiswa', 'idMahasiswa');
     }
 
     public function getJWTIdentifier()

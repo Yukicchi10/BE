@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('tugas_murids', function (Blueprint $table) {
             $table->id('idTugasMurid');
             $table->unsignedBigInteger('idTugas');
-            $table->unsignedBigInteger('idSiswa');
+            $table->unsignedBigInteger('idMahasiswa');
             $table->string('file');
             $table->string('nilai');
             $table->enum('status', ['selesai', 'belum selesai']);
@@ -25,7 +25,7 @@ return new class extends Migration
 
         Schema::table('tugas_murids', function (Blueprint $table) {
             $table->foreign('idTugas')->references('idTugas')->on('tugas');
-            $table->foreign('idSiswa')->references('idSiswa')->on('siswas');
+            $table->foreign('idMahasiswa')->references('idMahasiswa')->on('mahasiswas');
         });
     }
 

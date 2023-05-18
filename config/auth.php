@@ -66,12 +66,12 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Siswa::class,
+            'model' => App\Models\Mahasiswa::class,
         ],
 
-        'teachers' => [
+        'dosen' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Guru::class,
+            'model' => App\Models\Dosen::class,
         ],
 
         // 'users' => [

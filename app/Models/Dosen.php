@@ -8,16 +8,16 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Guru extends Authenticatable implements JWTSubject
+class Dosen extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory;
 
-    protected $table = 'gurus';
+    protected $table = 'dosens';
 
     protected $fillable = [
-        'idGuru',
+        'idDosen',
         'nama',
-        'nisn',
+        'nidn',
         'email',
         'password',
         'tempat',
@@ -32,11 +32,11 @@ class Guru extends Authenticatable implements JWTSubject
     ];
 
 
-    protected $primaryKey = 'idGuru';
+    protected $primaryKey = 'idDosen';
 
     public function materi()
     {
-        return $this->hasMany(Materi::class, 'idGuru', 'createdBy');
+        return $this->hasMany(Materi::class, 'idDosen', 'createdBy');
     }
 
     public function getJWTIdentifier()

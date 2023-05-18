@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Guru>
  */
-class GuruFactory extends Factory
+class DosenFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +18,7 @@ class GuruFactory extends Factory
     {
         return [
             'nama' => $this->faker->name,
-            'nip' => $this->faker->numerify,
+            'nidn' => $this->faker->numerify,
             'email' => $this->faker->unique()->safeEmail,
             'password' => bcrypt('password'),
             'tempat' => $this->faker->city,

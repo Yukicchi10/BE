@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\BaseController as BaseController;
-use App\Models\Guru;
+use App\Models\Dosen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AuthenticatedControllerGuru extends BaseController
+class AuthenticatedControllerDosen extends BaseController
 {
 
     public function username()
@@ -24,19 +24,19 @@ class AuthenticatedControllerGuru extends BaseController
     public function store(Request $request)
     {
         try {
-            $teacher = Guru::where('email', $request->email)->first();
-            if (!$teacher) {
+            $Dosen = Dosen::where('email', $request->email)->first();
+            if (!$Dosen) {
                 return $this->sendError('username', $this->username() . ' not found', 401);
             }
             if (!Auth::attempt($request->only($this->username(), 'password'), $request->remember_me)) {
                 return $this->sendError('password', 'Wrong Password', 401);
             }
 
-            $token = $teacher->createToken('token')->plainTextToken;
+            $token = $Dosen->createToken('token')->plainTextToken;
             $dataUser = [
-                'id' => $teacher->idGuru,
-                'name' => $teacher->nama,
-                'email' => $teacher->email,
+                'id' => $Dosen->idDosen,
+                'name' => $Dosen->nama,
+                'email' => $Dosen->email,
                 'token' => $token
             ];
 
@@ -46,7 +46,7 @@ class AuthenticatedControllerGuru extends BaseController
 
             return $this->sendResponse($response, 'User login successfully.');
         } catch (\Throwable $th) {
-            return $this->sendError('Unautorized.', ['error' => 'Unautorized'], 401);
+            return $this->sendError('Unauthorized.', ['error' => 'Unautorized'], 401);
         }
     }
 
@@ -56,8 +56,8 @@ class AuthenticatedControllerGuru extends BaseController
     public function destroy()
     {
         Auth::guard('web')->logout();
-        $teacher = request()->user();
-        $teacher->tokens()->delete();
+        $Dosen = request()->user();
+        $Dosen->tokens()->delete();
 
         return $this->sendResponse([], 'User logout successfully.');
     }

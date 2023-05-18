@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\BaseController as BaseController;
-use App\Models\Siswa;
+use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +24,7 @@ class AuthenticatedController extends BaseController
     public function store(Request $request)
     {
         try {
-            $user = Siswa::where('email', $request->email)->first();
+            $user = Mahasiswa::where('email', $request->email)->first();
             if (!$user) {
                 return $this->sendError('username', $this->username() . ' not found', 401);
             }
@@ -34,7 +34,7 @@ class AuthenticatedController extends BaseController
 
             $token = $user->createToken('token')->plainTextToken;
             $dataUser = [
-                'id' => $user->idSiswa,
+                'id' => $user->idMahasiswa,
                 'name' => $user->nama,
                 'email' => $user->email,
                 'token' => $token
