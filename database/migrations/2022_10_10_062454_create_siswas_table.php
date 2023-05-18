@@ -25,7 +25,7 @@ return new class extends Migration
             // $table->unsignedBigInteger('idAbsensi');
             // silahkan custom sendiri untuk database-nya, disesuaikan dengan rancangan
             $table->string('nama');
-            $table->string('nisn');
+            $table->string('nim');
             $table->string('email');
             $table->string('password');
             $table->string('tempat')->nullable();

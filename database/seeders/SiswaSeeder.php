@@ -18,7 +18,7 @@ class SiswaSeeder extends Seeder
     {
         $siswa = [
             'nama' => 'ujang',
-            'nisn' => '123123123',
+            'nim' => '123123123',
             'email' => 'ujang@gmail.com',
             'password' => bcrypt('ujang123'),
             'tempat' => 'Bandung',

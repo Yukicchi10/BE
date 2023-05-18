@@ -28,7 +28,7 @@ class SiswaResource extends JsonResource
             'idSiswa' => $this->idSiswa,
             'idKelas' => $this->idKelas,
             'nama' => $this->nama,
-            'nisn' => $this->nisn,
+            'nim' => $this->nim,
             'kelas' => ($this->kelas) ? [
                 $this->kelas->nama_kelas
             ] : 'Tak ada kelas',

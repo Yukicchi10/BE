@@ -11,7 +11,7 @@ class SiswaController extends BaseController
 {
     const VALIDATION_RULES = [
         'nama' => 'required|string|max:255',
-        'nisn' => 'required|string|max:255',
+        'nim' => 'required|string|max:255',
         'idKelas' => 'nullable',
         'email' => 'required|string|max:255',
         'password' => 'required|string|max:255',

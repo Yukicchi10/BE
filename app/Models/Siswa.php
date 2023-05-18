@@ -18,7 +18,7 @@ class Siswa extends Authenticatable implements JWTSubject
         'idSiswa',
         'idKelas',
         'nama',
-        'nisn',
+        'nim',
         'email',
         'password',
         'tempat',
