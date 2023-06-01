@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dosen;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\DosenResource;
 use App\Http\Controllers\API\BaseController;
@@ -48,7 +49,15 @@ class DosenController extends BaseController
     {
         try {
             $this->validate($request, self::VALIDATION_RULES);
+            $user = new User;
+            $user->name = $request->nama;
+            $user->role = "dosen";
+            $user->password = bcrypt($request->password);
+            $user->email = $request->email;
+            $user->save();
+            
             $dosen = new Dosen;
+            $dosen->id_user = $user->id;
             $dosen->nama = $request->nama;
             $dosen->nidn = $request->nidn;
             $dosen->email = $request->email;
@@ -62,9 +71,9 @@ class DosenController extends BaseController
             $dosen->kd_pos = $request->kd_pos;
             $dosen->save();
 
-            return $this->sendResponse(new DosenResource($dosen), 'guru created successfully');
+            return $this->sendResponse(new DosenResource($dosen), 'dosen created successfully');
         } catch (\Throwable $th) {
-            return $this->sendError('error creating guru', $th->getMessage());
+            return $this->sendError('error creating lecturer', $th->getMessage());
         }
     }
 
@@ -106,6 +115,13 @@ class DosenController extends BaseController
                 'telepon' => 'required|string|max:255',
                 'kd_pos' => 'required|string|max:255',
             ]);
+            $user = User::findOrFail($id);
+            $user->name = $request->nama;
+            $user->role = "dosen";
+            $user->password = bcrypt($request->password);
+            $user->email = $request->email;
+            $user->save();
+
             $dosen = Dosen::findOrFail($id);
             $dosen->nama = $request->nama;
             $dosen->nidn = $request->nidn;

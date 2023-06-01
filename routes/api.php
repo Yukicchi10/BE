@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AuthenticatedController;
 use App\Http\Controllers\API\AuthenticatedControllerDosen;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataPelajaranController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TugasController;
@@ -49,9 +50,14 @@ Route::get('/hello', function () {
 });
 
 Route::middleware(['auth'])->group(function(){
-    Route::get('/hello', function () {
-        return 'Hello, world!';
-    })->middleware('userAkses:admin');
+    Route::get('/student/{id}', [MahasiswaController::class, "show"])->middleware('userAkses:mahasiswa');
+   
+    // Admin role, to manage lecturer
+    Route::get('/lecturer', [DosenController::class, "index"])->middleware('userAkses:admin');
+    Route::get('/lecturer/{id}', [DosenController::class, "show"])->middleware('userAkses:admin');
+    Route::post('/lecturer', [DosenController::class, "store"])->middleware('userAkses:admin');
+    Route::put('/lecturer/{id}', [DosenController::class, "update"])->middleware('userAkses:admin');
+    Route::delete('/lecturer/{id}', [DosenController::class, "destroy"])->middleware('userAkses:admin');
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {

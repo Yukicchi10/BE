@@ -15,8 +15,9 @@ class Mahasiswa extends Authenticatable implements JWTSubject
     protected $table = 'mahasiswas';
 
     protected $fillable = [
-        'idMahasiswa',
-        'idKelas',
+        'id',
+        'id_user',
+        'id_kelas',
         'nama',
         'nim',
         'email',
@@ -34,7 +35,7 @@ class Mahasiswa extends Authenticatable implements JWTSubject
         'updated_at',
     ];
 
-    protected $primaryKey = 'idMahasiswa';
+    protected $primaryKey = 'id';
 
     // Penting untuk tim lemon!!!
     // Penjelasan : yang di comment ini untuk template pembuatan migration

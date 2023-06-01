@@ -15,7 +15,8 @@ class Dosen extends Authenticatable implements JWTSubject
     protected $table = 'dosens';
 
     protected $fillable = [
-        'idDosen',
+        'id',
+        'id_user',
         'nama',
         'nidn',
         'email',
@@ -32,11 +33,11 @@ class Dosen extends Authenticatable implements JWTSubject
     ];
 
 
-    protected $primaryKey = 'idDosen';
+    protected $primaryKey = 'id';
 
     public function materi()
     {
-        return $this->hasMany(Materi::class, 'idDosen', 'createdBy');
+        return $this->hasMany(Materi::class, 'id', 'createdBy');
     }
 
     public function getJWTIdentifier()

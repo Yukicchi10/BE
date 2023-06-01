@@ -25,11 +25,10 @@ class DosenResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'idDosen' => $this->idDosen,
+            'id'=> $this->id,
+            'id_dosen' => $this->id_dosen,
             'nama' => $this->nama,
             'nidn' => $this->nidn,
-            'email' => $this->email,
-            'password' => $this->password,
             'tempat' => $this->tempat,
             'tgl_lahir' => $this->tgl_lahir,
             'jns_kelamin' => $this->jns_kelamin,
