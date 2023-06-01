@@ -42,6 +42,18 @@ Route::post('/auth/logout', [AuthenticatedController::class, 'logout']);
 Route::post('/auth/refresh', [AuthenticatedController::class, 'refresh']);
 //Route::post('/auth/logout', [AuthenticatedController::class, 'destroy'])->middleware('auth:sanctum');
 
+Route::get('/abc', [SiswaController::class, 'show']);
+
+Route::get('/hello', function () {
+    return 'Hello, world!';
+});
+
+Route::middleware(['auth'])->group(function(){
+    Route::get('/hello', function () {
+        return 'Hello, world!';
+    })->middleware('userAkses:admin');
+});
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('siswa', SiswaController::class);
 });
@@ -91,6 +103,8 @@ Route::get('/tugas', [TugasController::class, 'index']);
 Route::get('/tugas/show/{id}', [TugasController::class, 'show']);
 Route::put('/tugas/update/{id}', [TugasController::class, 'update']);
 Route::delete('/tugas/delete/{id}', [TugasController::class, 'destroy']);
+
+
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('tugas', TugasController::class);

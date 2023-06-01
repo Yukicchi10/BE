@@ -79,12 +79,33 @@ class AuthenticatedController extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
+        // return response()->json(['error' => 'Hello world, Silahkan Daftar Terlebih Dahulu'], 401);
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required'
+        ], [
+            'email.required' => 'Email wajib diisi',
+            'password.required' => 'Password wajib diisi'
+        ]);
+
+        $infologin = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
         $credentials = request(['email', 'password']);
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Data Tidak Ditemukan, Silahkan Daftar Terlebih Dahulu'], 401);
+
+        if (!$token = Auth::attempt($infologin)) {
+            return response()->json(['error' => 'Username dan password tidak sesuai'], 401);
         }
+        // return $this->respondWithToken($token);
+
+        // $credentials = request(['email', 'password']);
+        // // return response()->json($credentials);
+        // if (!$token = auth()->attempt($credentials)) {
+        //     return response()->json(['error' => 'Data Tidak Ditemukan, Silahkan Daftar Terlebih Dahulu'], 401);
+        // }
 
         return $this->respondWithToken($token);
     }
@@ -116,10 +137,10 @@ class AuthenticatedController extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh()
-    {
-        return $this->respondWithToken(auth()->refresh());
-    }
+    // public function refresh()
+    // {
+    //     return $this->respondWithToken(auth()->refresh());
+    // }
 
     /**
      * Get the token array structure.
@@ -133,7 +154,8 @@ class AuthenticatedController extends BaseController
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 120
+            'role'=> Auth::user()->role
+            // 'expires_in' => auth()->factory()->getTTL() * 120
         ]);
     }
 }
