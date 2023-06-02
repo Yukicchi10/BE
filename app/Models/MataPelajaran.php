@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class MataPelajaran extends Model
+class MataPelajaran extends Authenticatable implements JWTSubject
 {
     use HasFactory;
     protected $table = 'mata_pelajarans';
@@ -15,6 +17,9 @@ class MataPelajaran extends Model
         'id_dosen',
         'nama_mapel',
         'deskripsi_mapel',
+        'day',
+        'start_time',
+        'end_time',
         'created_at',
         'updated_at',
     ];
@@ -22,9 +27,21 @@ class MataPelajaran extends Model
     protected $guarded = [];
 
     protected $primaryKey = 'id';
-
+    public function dosens()
+    {
+        return $this->belongsTo(Dosen::class);
+    }
     public function materi()
     {
         return $this->hasMany(MataPelajaran::class, 'idMapel', 'idMapel');
+    }
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

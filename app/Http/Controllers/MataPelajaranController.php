@@ -6,6 +6,7 @@ use App\Http\Controllers\API\BaseController;
 use Illuminate\Http\Request;
 use App\Models\MataPelajaran;
 use App\Http\Resources\MataPelajaranResource;
+use Illuminate\Support\Facades\DB;
 
 class MataPelajaranController extends BaseController
 {
@@ -22,8 +23,12 @@ class MataPelajaranController extends BaseController
     public function index()
     {
         try {
-            $mapel = MataPelajaran::all();
-            return $this->sendResponse($mapel, "mapel retrieved successfully");
+            // $mapel = MataPelajaran::all();
+            $subjects = DB::table('mata_pelajarans')
+                ->join('dosens', 'mata_pelajarans.id_dosen', '=', 'dosens.id')
+                ->select('mata_pelajarans.*', 'dosens.nama as teacher_name')
+                ->get();
+            return $this->sendResponse($subjects, "mapel retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error mapel retrieved successfully", $th->getMessage());
         }
@@ -54,6 +59,9 @@ class MataPelajaranController extends BaseController
             $mapel->id_dosen = $request->id_dosen;
             $mapel->nama_mapel = $request->nama_mapel;
             $mapel->deskripsi_mapel = $request->deskripsi_mapel;
+            $mapel->day = $request->day;
+            $mapel->start_time = $request->start_time;
+            $mapel->end_time = $request->end_time;
 
             $mapel->save();
 
@@ -104,7 +112,13 @@ class MataPelajaranController extends BaseController
                 'nama_mapel' => 'required|string|max:255',
             ]);
             $mapel = MataPelajaran::findOrFail($id);
+            $mapel->id_class = $request->id_class;
+            $mapel->id_dosen = $request->id_dosen;
             $mapel->nama_mapel = $request->nama_mapel;
+            $mapel->deskripsi_mapel = $request->deskripsi_mapel;
+            $mapel->day = $request->day;
+            $mapel->start_time = $request->start_time;
+            $mapel->end_time = $request->end_time;
             $mapel->save();
             return $this->sendResponse($mapel, 'mapel updated successfully');
         } catch (\Throwable $th) {

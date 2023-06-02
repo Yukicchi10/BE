@@ -19,10 +19,13 @@ return new class extends Migration
             $table->unsignedBigInteger('id_dosen');
             $table->string('nama_mapel');
             $table->string('deskripsi_mapel');
+            $table->string('day');
+            $table->string('start_time');
+            $table->string('end_time');
             $table->timestamps();
 
-            // $table->foreign('id_class')->references('id')->on('kelas');
-            // $table->foreign('id_dosen')->references('id')->on('dosens');
+            $table->foreign('id_class')->references('id')->on('kelas');
+            $table->foreign('id_dosen')->references('id')->on('dosens');
         });
     }
 

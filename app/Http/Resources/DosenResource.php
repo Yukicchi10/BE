@@ -26,7 +26,7 @@ class DosenResource extends JsonResource
     {
         return [
             'id'=> $this->id,
-            'id_dosen' => $this->id_dosen,
+            'id_user' => $this->id_user,
             'nama' => $this->nama,
             'nidn' => $this->nidn,
             'tempat' => $this->tempat,

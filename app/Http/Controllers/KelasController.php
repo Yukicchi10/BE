@@ -74,7 +74,12 @@ class KelasController extends BaseController
         try {
             $kelas = Kelas::findOrFail($id);
             $mahasiswa = Mahasiswa::where('id_class', $id)->get();
+            $subjects = DB::table('mata_pelajarans')->where('id_class', $id)
+                ->join('dosens', 'mata_pelajarans.id_dosen', '=', 'dosens.id')
+                ->select('mata_pelajarans.*', 'dosens.nama as teacher_name')
+                ->get();
             $kelas->mahasiswa = $mahasiswa;
+            $kelas->mapel = $subjects;
             return $this->sendResponse($kelas, "kelas retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving kelas", $th->getMessage());
