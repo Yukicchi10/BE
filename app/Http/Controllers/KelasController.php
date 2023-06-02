@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Kelas;
 use Illuminate\Http\Request;
-use App\Http\Resources\KelasResource;
 use App\Http\Controllers\API\BaseController;
+use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\DB;
 
 class KelasController extends BaseController
@@ -72,8 +72,10 @@ class KelasController extends BaseController
     {
         
         try {
-            $kelas = Kelas::where('id', $id)->first();
-            return $this->sendResponse(new KelasResource($kelas), "kelas retrieved successfully");
+            $kelas = Kelas::findOrFail($id);
+            $mahasiswa = Mahasiswa::where('id_class', $id)->get();
+            $kelas->mahasiswa = $mahasiswa;
+            return $this->sendResponse($kelas, "kelas retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving kelas", $th->getMessage());
         }

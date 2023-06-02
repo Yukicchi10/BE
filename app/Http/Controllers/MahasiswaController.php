@@ -6,9 +6,7 @@ use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\MahasiswaResource;
 use App\Models\Mahasiswa;
 use App\Models\User;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 
 class MahasiswaController extends BaseController
 {
@@ -37,7 +35,7 @@ class MahasiswaController extends BaseController
     public function index()
     {
         try {
-            $mahasiswa = (MahasiswaResource::collection(Mahasiswa::all()));
+            $mahasiswa = (Mahasiswa::all());
             return $this->sendResponse($mahasiswa, "siswa retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error siswa retrieved successfully", $th->getMessage());
@@ -55,7 +53,6 @@ class MahasiswaController extends BaseController
         try {
             $this->validate($request, self::VALIDATION_RULES);
             $user = new User;
-            $user->name = $request->nama;
             $user->role = "mahasiswa";
             $user->password = bcrypt($request->password);
             $user->email = $request->email;
@@ -63,6 +60,8 @@ class MahasiswaController extends BaseController
 
             $mahasiswa = new Mahasiswa;
 
+            $mahasiswa->id_user = $user->id;
+            $mahasiswa->id_class = $request->id_class;
             // Mahasiswa::table('mahasiswas', function (Blueprint $table) {
             //     $table->foreign('idKelas')->references('id')->on('kelas');
             // });
@@ -96,7 +95,7 @@ class MahasiswaController extends BaseController
     {
         try {
             $mahasiswa = Mahasiswa::findOrFail($id);
-            return $this->sendResponse(new MahasiswaResource($mahasiswa), "siswa retrieved successfully");
+            return $this->sendResponse($mahasiswa, "siswa retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving siswa", $th->getMessage());
         }
@@ -131,7 +130,6 @@ class MahasiswaController extends BaseController
             $mahasiswa = Mahasiswa::findOrFail($id);
             $mahasiswa->nama = $request->nama;
             $mahasiswa->nim = $request->nim;
-            $mahasiswa->idKelas = $request->idKelas;
             $mahasiswa->tempat = $request->tempat;
             $mahasiswa->tgl_lahir = $request->tgl_lahir;
             $mahasiswa->jns_kelamin = $request->jns_kelamin;

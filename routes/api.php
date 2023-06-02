@@ -69,6 +69,7 @@ Route::middleware(['auth'])->group(function(){
 
     // Admin role, to manage Class
     Route::get('/admin/class', [KelasController::class, "index"])->middleware('userAkses:admin');
+    Route::get('/admin/class/{id}', [KelasController::class, "show"])->middleware('userAkses:admin');
     Route::post('/admin/class', [KelasController::class, "store"])->middleware('userAkses:admin');
     Route::put('/admin/class/{id}', [KelasController::class, "update"])->middleware('userAkses:admin');
     Route::delete('/admin/class/{id}', [KelasController::class, "destroy"])->middleware('userAkses:admin');

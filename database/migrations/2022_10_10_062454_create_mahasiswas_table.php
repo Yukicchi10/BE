@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('mahasiswas', function (Blueprint $table) {
             $table->id('id');
-            $table->string('id_user');
+            $table->unsignedBigInteger('id_user');
+            $table->unsignedBigInteger('id_class');
             $table->string('nama');
             $table->string('nim');
             $table->string('tempat')->nullable();
@@ -32,6 +33,8 @@ return new class extends Migration
 
             // $table->foreign('A')->references('B')->on('C')
 
+            $table->foreign('id_user')->references('id')->on('users');
+            $table->foreign('id_class')->references('id')->on('kelas');
             // Keterangan :
             // - A (field yang memiliki relasi dengan table lain)
             // - B (field table sumber yang menjadi relasi)
