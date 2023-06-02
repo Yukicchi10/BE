@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('nim');
             $table->string('tempat')->nullable();
-            $table->date('tgl_lahir')->nullable();
+            $table->string('tgl_lahir')->nullable();
             $table->enum('jns_kelamin', ['laki-laki', 'perempuan'])->nullable();
             $table->string('agama')->nullable();
             $table->string('nama_ayah')->nullable();

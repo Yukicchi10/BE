@@ -114,8 +114,6 @@ class MahasiswaController extends BaseController
             $request->validate([
                 'nama' => 'required|string|max:255',
                 'nim' => 'required|string|max:255',
-                'idKelas' => 'nullable',
-                'email' => 'required|string|max:255',
                 'tempat' => 'required|string|max:255',
                 'tgl_lahir' => 'required|date',
                 'jns_kelamin' => 'required|string|max:255',
