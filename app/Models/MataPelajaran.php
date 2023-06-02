@@ -9,9 +9,19 @@ class MataPelajaran extends Model
 {
     use HasFactory;
     protected $table = 'mata_pelajarans';
+    protected $fillable = [
+        'id',
+        'id_class',
+        'id_dosen',
+        'nama_mapel',
+        'deskripsi_mapel',
+        'created_at',
+        'updated_at',
+    ];
+
     protected $guarded = [];
 
-    protected $primaryKey = 'idMapel';
+    protected $primaryKey = 'id';
 
     public function materi()
     {

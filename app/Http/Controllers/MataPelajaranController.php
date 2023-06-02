@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use Illuminate\Http\Request;
 use App\Models\MataPelajaran;
 use App\Http\Resources\MataPelajaranResource;
 
-class MataPelajaranController extends Controller
+class MataPelajaranController extends BaseController
 {
     const VALIDATION_RULES = [
         'nama_mapel' => 'required|string|max:255',
@@ -21,7 +22,7 @@ class MataPelajaranController extends Controller
     public function index()
     {
         try {
-            $mapel = (MataPelajaranResource::collection(MataPelajaran::all()));
+            $mapel = MataPelajaran::all();
             return $this->sendResponse($mapel, "mapel retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error mapel retrieved successfully", $th->getMessage());
@@ -49,10 +50,14 @@ class MataPelajaranController extends Controller
         try {
             $this->validate($request, self::VALIDATION_RULES);
             $mapel = new MataPelajaran();
+            $mapel->id_class = $request->id_class;
+            $mapel->id_dosen = $request->id_dosen;
             $mapel->nama_mapel = $request->nama_mapel;
+            $mapel->deskripsi_mapel = $request->deskripsi_mapel;
+
             $mapel->save();
 
-            return $this->sendResponse(new MataPelajaranResource($mapel), 'mapel created successfully');
+            return $this->sendResponse($mapel, 'mapel created successfully');
         } catch (\Throwable $th) {
             return $this->sendError('error creating mapel', $th->getMessage());
         }
@@ -68,7 +73,7 @@ class MataPelajaranController extends Controller
     {
         try {
             $mapel = MataPelajaran::findOrFail($id);
-            return $this->sendResponse(new MataPelajaranResource($mapel), "mapel retrieved successfully");
+            return $this->sendResponse($mapel, "mapel retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving mapel", $th->getMessage());
         }

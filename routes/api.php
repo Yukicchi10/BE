@@ -73,6 +73,13 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/admin/class', [KelasController::class, "store"])->middleware('userAkses:admin');
     Route::put('/admin/class/{id}', [KelasController::class, "update"])->middleware('userAkses:admin');
     Route::delete('/admin/class/{id}', [KelasController::class, "destroy"])->middleware('userAkses:admin');
+
+    // Admin role, to manage Mapel
+    Route::get('/admin/mapel', [MataPelajaranController::class, "index"])->middleware('userAkses:admin');
+    Route::get('/admin/mapel/{id}', [MataPelajaranController::class, "show"])->middleware('userAkses:admin');
+    Route::post('/admin/mapel', [MataPelajaranController::class, "store"])->middleware('userAkses:admin');
+    Route::put('/admin/mapel/{id}', [MataPelajaranController::class, "update"])->middleware('userAkses:admin');
+    Route::delete('/admin/mapel/{id}', [MataPelajaranController::class, "destroy"])->middleware('userAkses:admin');
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
