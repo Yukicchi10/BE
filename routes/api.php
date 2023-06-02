@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AuthenticatedController;
 use App\Http\Controllers\API\AuthenticatedControllerDosen;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataPelajaranController;
 use App\Http\Controllers\SiswaController;
@@ -58,6 +59,19 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/lecturer', [DosenController::class, "store"])->middleware('userAkses:admin');
     Route::put('/lecturer/{id}', [DosenController::class, "update"])->middleware('userAkses:admin');
     Route::delete('/lecturer/{id}', [DosenController::class, "destroy"])->middleware('userAkses:admin');
+
+    // Admin role, to manage Students
+    Route::get('/students', [MahasiswaController::class, "index"])->middleware('userAkses:admin');
+    Route::get('/students/{id}', [MahasiswaController::class, "show"])->middleware('userAkses:admin');
+    Route::post('/students', [MahasiswaController::class, "store"])->middleware('userAkses:admin');
+    Route::put('/students/{id}', [MahasiswaController::class, "update"])->middleware('userAkses:admin');
+    Route::delete('/students/{id}', [MahasiswaController::class, "destroy"])->middleware('userAkses:admin');
+
+    // Admin role, to manage Class
+    Route::get('/admin/class', [KelasController::class, "index"])->middleware('userAkses:admin');
+    Route::post('/admin/class', [KelasController::class, "store"])->middleware('userAkses:admin');
+    Route::put('/admin/class/{id}', [KelasController::class, "update"])->middleware('userAkses:admin');
+    Route::delete('/admin/class/{id}', [KelasController::class, "destroy"])->middleware('userAkses:admin');
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {

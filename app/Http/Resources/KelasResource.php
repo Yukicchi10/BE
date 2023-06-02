@@ -15,9 +15,9 @@ class KelasResource extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'idKelas' => $this->idKelas,
+            'id' => $this->id,
             'nama_kelas' => $this->nama_kelas,
-            'tingkat' => $this->tingkat,
+            'angkatan' => $this->angkatan,
 
             /**
          *  jika suatu field memiliki relasi terhadap tabel lain maka gunakan kode ini

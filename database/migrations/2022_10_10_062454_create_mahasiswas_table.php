@@ -13,21 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        // Penting untuk tim lemon!!!
-        // Penjelasan : yang di comment ini untuk template pembuatan migration
-        // (WAJIB HAPUS COMMENT TEMPLATE JIKA TIDAK DIPAKAI) 
         Schema::create('mahasiswas', function (Blueprint $table) {
             $table->id('id');
-            $table->unsignedBigInteger('idKelas')->nullable();
-            // kode dibawah jika memiliki relasi sesuai dengan field rancangan database
-            // $table->unsignedBigInteger('idNilai');
-            // $table->unsignedBigInteger('idMapel');
-            // $table->unsignedBigInteger('idAbsensi');
-            // silahkan custom sendiri untuk database-nya, disesuaikan dengan rancangan
+            $table->string('id_user');
             $table->string('nama');
             $table->string('nim');
-            $table->string('email');
-            $table->string('password');
             $table->string('tempat')->nullable();
             $table->date('tgl_lahir')->nullable();
             $table->enum('jns_kelamin', ['laki-laki', 'perempuan'])->nullable();
@@ -49,9 +39,9 @@ return new class extends Migration
             // ex : $table->foreign('idNilai')->references('idNilai')->on('nilas') 
         });
 
-        Schema::table('mahasiswas', function (Blueprint $table) {
-            $table->foreign('idKelas')->references('idKelas')->on('kelas');
-        });
+        // Schema::table('mahasiswas', function (Blueprint $table) {
+        //     $table->foreign('idKelas')->references('id')->on('kelas');
+        // });
     }
 
     /**

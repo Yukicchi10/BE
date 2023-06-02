@@ -15,11 +15,9 @@ return new class extends Migration
     {
         Schema::create('dosens', function (Blueprint $table) {
             $table->id('id');
-            $table->string('id_user');
+            $table->unsignedBigInteger('id_user');
             $table->string('nama');
             $table->string('nidn');
-            $table->string('email');
-            $table->string('password');
             $table->string('tempat')->nullable();
             $table->string('tgl_lahir')->nullable();
             $table->enum('jns_kelamin', ['laki-laki', 'perempuan'])->nullable();
@@ -29,6 +27,9 @@ return new class extends Migration
             $table->string('kd_pos')->nullable();
             $table->timestamps();
 
+            // Schema::table('dosens', function (Blueprint $table) {
+                $table->foreign('id_user')->references('id')->on('users');
+            // });
             // Kode agar dapat berelasi dengan table lain
 
             // $table->foreign('A')->references('B')->on('C')

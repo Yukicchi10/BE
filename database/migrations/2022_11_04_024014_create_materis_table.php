@@ -28,7 +28,7 @@ return new class extends Migration
         Schema::table('materis', function (Blueprint $table) {
             $table->foreign('createdBy')->references('id')->on('dosens');
             $table->foreign('idMapel')->references('idMapel')->on('mata_pelajarans');
-            $table->foreign('idKelas')->references('idKelas')->on('kelas');
+            $table->foreign('idKelas')->references('id')->on('kelas');
         });
     }
 

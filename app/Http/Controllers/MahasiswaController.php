@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\MahasiswaResource;
 use App\Models\Mahasiswa;
+use App\Models\User;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class MahasiswaController extends BaseController
 {
@@ -51,12 +54,21 @@ class MahasiswaController extends BaseController
     {
         try {
             $this->validate($request, self::VALIDATION_RULES);
+            $user = new User;
+            $user->name = $request->nama;
+            $user->role = "mahasiswa";
+            $user->password = bcrypt($request->password);
+            $user->email = $request->email;
+            $user->save();
+
             $mahasiswa = new Mahasiswa;
+
+            // Mahasiswa::table('mahasiswas', function (Blueprint $table) {
+            //     $table->foreign('idKelas')->references('id')->on('kelas');
+            // });
+            // // $mahasiswa->i
             $mahasiswa->nama = $request->nama;
             $mahasiswa->nim = $request->nim;
-            $mahasiswa->idKelas = $request->idKelas;
-            $mahasiswa->email = $request->email;
-            $mahasiswa->password = bcrypt($request->password);
             $mahasiswa->tempat = $request->tempat;
             $mahasiswa->tgl_lahir = $request->tgl_lahir;
             $mahasiswa->jns_kelamin = $request->jns_kelamin;
@@ -115,11 +127,11 @@ class MahasiswaController extends BaseController
                 'telepon' => 'required|string|max:255',
                 'kd_pos' => 'required|string|max:255',
             ]);
+
             $mahasiswa = Mahasiswa::findOrFail($id);
             $mahasiswa->nama = $request->nama;
             $mahasiswa->nim = $request->nim;
             $mahasiswa->idKelas = $request->idKelas;
-            $mahasiswa->email = $request->email;
             $mahasiswa->tempat = $request->tempat;
             $mahasiswa->tgl_lahir = $request->tgl_lahir;
             $mahasiswa->jns_kelamin = $request->jns_kelamin;
