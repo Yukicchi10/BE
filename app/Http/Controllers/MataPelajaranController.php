@@ -6,6 +6,9 @@ use App\Http\Controllers\API\BaseController;
 use Illuminate\Http\Request;
 use App\Models\MataPelajaran;
 use App\Http\Resources\MataPelajaranResource;
+use App\Models\Dosen;
+use App\Models\Mahasiswa;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MataPelajaranController extends BaseController
@@ -25,6 +28,47 @@ class MataPelajaranController extends BaseController
         try {
             // $mapel = MataPelajaran::all();
             $subjects = DB::table('mata_pelajarans')
+                ->join('dosens', 'mata_pelajarans.id_dosen', '=', 'dosens.id')
+                ->select('mata_pelajarans.*', 'dosens.nama as teacher_name')
+                ->get();
+            return $this->sendResponse($subjects, "mapel retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error mapel retrieved successfully", $th->getMessage());
+        }
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listSubjectLecturer()
+    {
+        try {
+            $user = Auth::user();
+            $dosen = Dosen::where('id_user', $user->id)->first();
+            $subjects = DB::table('mata_pelajarans')->where("id_dosen", $dosen->id)
+                ->join('kelas', 'mata_pelajarans.id_class', '=', 'kelas.id')
+                ->select('mata_pelajarans.*', 'kelas.nama_kelas as class_name')
+                ->get();
+            return $this->sendResponse($subjects, "mapel retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error mapel retrieved successfully", $th->getMessage());
+        }
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listSubjectStudent()
+    {
+        try {
+            // $mapel = MataPelajaran::all();
+            $user = Auth::user();
+            $mahasiswa = Mahasiswa::where('id_user', $user->id)->first();
+            $subjects = DB::table('mata_pelajarans')->where("id_class", $mahasiswa->id_class)
                 ->join('dosens', 'mata_pelajarans.id_dosen', '=', 'dosens.id')
                 ->select('mata_pelajarans.*', 'dosens.nama as teacher_name')
                 ->get();
@@ -59,6 +103,8 @@ class MataPelajaranController extends BaseController
             $mapel->id_dosen = $request->id_dosen;
             $mapel->nama_mapel = $request->nama_mapel;
             $mapel->deskripsi_mapel = $request->deskripsi_mapel;
+            $mapel->room = $request->room;
+            $mapel->sks = $request->sks;
             $mapel->day = $request->day;
             $mapel->start_time = $request->start_time;
             $mapel->end_time = $request->end_time;
@@ -116,6 +162,8 @@ class MataPelajaranController extends BaseController
             $mapel->id_dosen = $request->id_dosen;
             $mapel->nama_mapel = $request->nama_mapel;
             $mapel->deskripsi_mapel = $request->deskripsi_mapel;
+            $mapel->room = $request->room;
+            $mapel->sks = $request->sks;
             $mapel->day = $request->day;
             $mapel->start_time = $request->start_time;
             $mapel->end_time = $request->end_time;

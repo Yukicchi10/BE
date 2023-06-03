@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('nama_mapel');
             $table->string('deskripsi_mapel');
             $table->string('day');
+            $table->string('room');
+            $table->string('sks');
             $table->string('start_time');
             $table->string('end_time');
             $table->timestamps();

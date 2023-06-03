@@ -61,14 +61,20 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/admin/class/{id}', [KelasController::class, "destroy"])->middleware('userAkses:admin');
 
     // Admin role, to manage Mapel
-    Route::get('/admin/mapel', [MataPelajaranController::class, "index"])->middleware('userAkses:admin');
+    // Route::get('/admin/mapel', [MataPelajaranController::class, "index"])->middleware('UserAkses:admin');
     Route::get('/admin/mapel/{id}', [MataPelajaranController::class, "show"])->middleware('userAkses:admin');
     Route::post('/admin/mapel', [MataPelajaranController::class, "store"])->middleware('userAkses:admin');
     Route::put('/admin/mapel/{id}', [MataPelajaranController::class, "update"])->middleware('userAkses:admin');
     Route::delete('/admin/mapel/{id}', [MataPelajaranController::class, "destroy"])->middleware('userAkses:admin');
 
-    //Student role, to see user information
+    //lecturer role
+    Route::get('/dosen/mapel', [MataPelajaranController::class, "listSubjectLecturer"])->middleware('userAkses:dosen');
+
+    //student role
+    Route::get('/mahasiswa/mapel', [MataPelajaranController::class, "listSubjectStudent"])->middleware('userAkses:mahasiswa');
+
 });
+
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('siswa', SiswaController::class);

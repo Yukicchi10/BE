@@ -17,6 +17,8 @@ class MataPelajaran extends Authenticatable implements JWTSubject
         'id_dosen',
         'nama_mapel',
         'deskripsi_mapel',
+        'room',
+        'sks',
         'day',
         'start_time',
         'end_time',
