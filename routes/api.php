@@ -31,28 +31,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Siswa
-Route::get('/auth/siswas', [SiswaController::class, 'index']);
-Route::get('/auth/edit-siswa/{id}', [SiswaController::class, 'show']);
-Route::put('/auth/update-siswa/{id}', [SiswaController::class, 'update']);
-Route::delete('/auth/hapus-siswa/{id}', [SiswaController::class, 'destroy']);
-Route::post('/auth/register', [SiswaController::class, 'register']);
-
-Route::post('/auth/me', [AuthenticatedController::class, 'me']);
+// all user
 Route::post('/auth/login', [AuthenticatedController::class, 'login']);
 Route::post('/auth/logout', [AuthenticatedController::class, 'logout']);
 Route::post('/auth/refresh', [AuthenticatedController::class, 'refresh']);
-//Route::post('/auth/logout', [AuthenticatedController::class, 'destroy'])->middleware('auth:sanctum');
 
-Route::get('/abc', [SiswaController::class, 'show']);
-
-Route::get('/hello', function () {
-    return 'Hello, world!';
-});
-
-Route::middleware(['auth'])->group(function(){
+Route::middleware(['auth'])->group(function () {
     Route::get('/student/{id}', [MahasiswaController::class, "show"])->middleware('userAkses:mahasiswa');
-   
+
     // Admin role, to manage lecturer
     Route::get('/lecturer', [DosenController::class, "index"])->middleware('userAkses:admin');
     Route::get('/lecturer/{id}', [DosenController::class, "show"])->middleware('userAkses:admin');
@@ -80,35 +66,22 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/admin/mapel', [MataPelajaranController::class, "store"])->middleware('userAkses:admin');
     Route::put('/admin/mapel/{id}', [MataPelajaranController::class, "update"])->middleware('userAkses:admin');
     Route::delete('/admin/mapel/{id}', [MataPelajaranController::class, "destroy"])->middleware('userAkses:admin');
+
+    //Student role, to see user information
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('siswa', SiswaController::class);
 });
-// Mahasiswa
 
-// Dosen
-Route::get('/auth/dosen', [DosenController::class, 'index']);
-Route::get('/auth/edit-dosen/{id}', [DosenController::class, 'show']);
-Route::put('/auth/update-dosen/{id}', [DosenController::class, 'update']);
-Route::delete('/auth/hapus-dosen/{id}', [DosenController::class, 'destroy']);
-Route::post('/auth/register-dosen', [DosenController::class, 'register']);
-
-Route::post('/auth/dosenme', [AuthenticatedControllerDosen::class, 'me']);
-Route::post('/auth/dosen-login', [AuthenticatedControllerDosen::class, 'login']);
-Route::post('/auth/dosen-logout', [AuthenticatedControllerDosen::class, 'logout']);
-Route::post('/auth/dosen-refresh', [AuthenticatedControllerDosen::class, 'refresh']);
+// user information
+Route::get('/auth/me', [AuthenticatedController::class, 'me']); //student
+Route::get('/auth/lecturer/me', [AuthenticatedControllerDosen::class, 'me']); //lecturer
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('dosen', DosenController::class);
 });
 // Dosen
-
-// Mata Pelajaran
-Route::get('/mapel', [MataPelajaranController::class, 'index']);
-Route::get('/mapel/show/{id}', [MataPelajaranController::class, 'show']);
-Route::put('/mapel/update/{id}', [MataPelajaranController::class, 'update']);
-Route::delete('/mapel/delete/{id}', [MataPelajaranController::class, 'destroy']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('mata_pelajaran', MataPelajaran::class);

@@ -93,12 +93,12 @@ class AuthenticatedController extends BaseController
             'email' => $request->email,
             'password' => $request->password
         ];
-        
+
 
         if (!$token = Auth::attempt($infologin)) {
             return response()->json(['error' => 'Username dan password tidak sesuai'], 401);
         }
-        
+
         return $this->respondWithToken($token);
     }
 
@@ -109,7 +109,15 @@ class AuthenticatedController extends BaseController
      */
     public function me()
     {
-        return response()->json(auth()->user());
+        try {
+            $user = Auth::user()->id;
+            $mahasiswa = Mahasiswa::where('id_user', $user)->first();
+            $mahasiswa->email = Auth::user()->email;
+            return $this->sendResponse($mahasiswa, "siswa retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error retrieving siswa", $th->getMessage());
+        }
+        // return response()->json(auth()->user());
     }
 
     /**
@@ -146,7 +154,7 @@ class AuthenticatedController extends BaseController
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'role'=> Auth::user()->role
+            'role' => Auth::user()->role
             // 'expires_in' => auth()->factory()->getTTL() * 120
         ]);
     }

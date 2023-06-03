@@ -7,6 +7,7 @@ use App\Http\Resources\MahasiswaResource;
 use App\Models\Mahasiswa;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MahasiswaController extends BaseController
 {
@@ -95,6 +96,25 @@ class MahasiswaController extends BaseController
     {
         try {
             $mahasiswa = Mahasiswa::findOrFail($id);
+            return $this->sendResponse($mahasiswa, "siswa retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error retrieving siswa", $th->getMessage());
+        }
+    }
+
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Mahasiswa  $mahasiswa
+     * @return \Illuminate\Http\Response
+     */
+    public function info()
+    {
+        try {
+            $user = Auth::user()->id;
+            $mahasiswa = Mahasiswa::where('id_user', $user->id)->first();
             return $this->sendResponse($mahasiswa, "siswa retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving siswa", $th->getMessage());

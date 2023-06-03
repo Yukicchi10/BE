@@ -96,7 +96,10 @@ class AuthenticatedControllerDosen extends BaseController
      * @return \Illuminate\Http\JsonResponse
      */
     public function me()
-    {
+    {   $user = Auth::user()->id;
+        $dosen = Dosen::where('id_user', $user)->first();
+        $dosen->email = Auth::user()->email;
+        return $this->sendResponse($dosen, "siswa retrieved successfully");
         return response()->json(auth()->user());
     }
 
@@ -117,10 +120,10 @@ class AuthenticatedControllerDosen extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh()
-    {
-        return $this->respondWithToken(auth()->refresh());
-    }
+    // public function refresh()
+    // {
+    //     return $this->respondWithToken(auth()->refresh());
+    // }
 
     /**
      * Get the token array structure.
@@ -134,7 +137,6 @@ class AuthenticatedControllerDosen extends BaseController
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 120
         ]);
     }
 }
