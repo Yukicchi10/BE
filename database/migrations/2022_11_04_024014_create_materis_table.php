@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('materis', function (Blueprint $table) {
-            $table->id('idMateri');
+            $table->id();
             $table->unsignedBigInteger('createdBy');
-            $table->unsignedBigInteger('idMapel');
-            $table->unsignedBigInteger('idKelas');
+            $table->unsignedBigInteger('id_mapel');
+            $table->unsignedBigInteger('id_kelas');
             $table->string('judul');
             $table->string('deskripsi');
             $table->string('file')->nullable();
@@ -27,8 +27,8 @@ return new class extends Migration
 
         Schema::table('materis', function (Blueprint $table) {
             $table->foreign('createdBy')->references('id')->on('dosens');
-            $table->foreign('idMapel')->references('id')->on('mata_pelajarans');
-            $table->foreign('idKelas')->references('id')->on('kelas');
+            $table->foreign('id_mapel')->references('id')->on('mata_pelajarans');
+            $table->foreign('id_kelas')->references('id')->on('kelas');
         });
     }
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\DosenController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataPelajaranController;
+use App\Http\Controllers\MateriController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TugasController;
 use App\Models\MataPelajaran;
@@ -69,9 +70,16 @@ Route::middleware(['auth'])->group(function () {
 
     //lecturer role
     Route::get('/dosen/mapel', [MataPelajaranController::class, "listSubjectLecturer"])->middleware('userAkses:dosen');
+    Route::get('/dosen/mapel/{id}', [MataPelajaranController::class, "show"])->middleware('userAkses:dosen');
+
+    Route::post('/dosen/materi/upload', [MateriController::class, "store"])->middleware('userAkses:dosen');
+    Route::get('/dosen/materi/download', [MateriController::class, "download"])->middleware('userAkses:dosen');
+    Route::put('/dosen/materi/{id}', [MateriController::class, "update"])->middleware('userAkses:dosen');
+    Route::delete('/dosen/materi/{id}', [MateriController::class, "destroy"])->middleware('userAkses:dosen');
 
     //student role
     Route::get('/mahasiswa/mapel', [MataPelajaranController::class, "listSubjectStudent"])->middleware('userAkses:mahasiswa');
+    Route::get('/mahasiswa/mapel/{id}', [MataPelajaranController::class, "show"])->middleware('userAkses:mahasiswa');
 
 });
 

@@ -11,7 +11,7 @@ class Materi extends Model
     protected $table = 'materis';
     protected $guarded = [];
 
-    protected $primaryKey = 'idMateri';
+    protected $primaryKey = 'id';
 
 
     public function guru()

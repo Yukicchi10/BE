@@ -8,6 +8,7 @@ use App\Models\MataPelajaran;
 use App\Http\Resources\MataPelajaranResource;
 use App\Models\Dosen;
 use App\Models\Mahasiswa;
+use App\Models\materi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -123,10 +124,17 @@ class MataPelajaranController extends BaseController
      * @param  \App\Models\MataPelajaran  $mataPelajaran
      * @return \Illuminate\Http\Response
      */
-    public function show(MataPelajaran $mataPelajaran, $id)
+    public function show($id)
     {
         try {
             $mapel = MataPelajaran::findOrFail($id);
+            $materi = Materi::where('id_mapel', $id)->get();
+            $subjects = DB::table('mata_pelajarans')->where('id_class', $id)
+                ->join('dosens', 'mata_pelajarans.id_dosen', '=', 'dosens.id')
+                ->select('mata_pelajarans.*', 'dosens.nama as teacher_name')
+                ->get();
+            // $mapel->mahasiswa = $mahasiswa;
+            $mapel->materi = $materi;
             return $this->sendResponse($mapel, "mapel retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving mapel", $th->getMessage());

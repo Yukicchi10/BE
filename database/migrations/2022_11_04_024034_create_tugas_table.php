@@ -22,7 +22,7 @@ return new class extends Migration
         });
 
         Schema::table('tugas', function (Blueprint $table) {
-            $table->foreign('idMateri')->references('idMateri')->on('materis');
+            $table->foreign('idMateri')->references('id')->on('materis');
         });
     }
 

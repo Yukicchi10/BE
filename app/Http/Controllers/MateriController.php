@@ -2,15 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\materi;
 use Illuminate\Http\Request;
 use App\Http\Resources\MateriResource;
+use App\Models\Dosen;
+use App\Models\MataPelajaran;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests;
+use Illuminate\Support\Facades\Storage;
 
-class MateriController extends Controller
+class MateriController extends BaseController
 {
     const VALIDATION_RULES = [
-        'idMapel' => 'required',
-        'idKelas' => 'required',
+        'id_kelas' => 'required',
         'judul' => 'required|string|max:255',
         'deskripsi' => 'required|string|max:255',
         'file' => 'nullable|string|max:255',
@@ -50,19 +58,56 @@ class MateriController extends Controller
     public function store(Request $request)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
-            $materi = new Materi();
-            $materi->idMapel = $request->idMapel;
-            $materi->idKelas = $request->idKelas;
-            $materi->judul = $request->nama_materi;
-            $materi->deskripsi = $request->deskripsi;
-            $materi->file = $request->file;
-            $materi->save();
+            // $this->validate($request, self::VALIDATION_RULES);
+            $mapel = MataPelajaran::findOrFail($request->id_mapel);
+            $user = Auth::user();
+            $dosen = Dosen::where("id_user", $user->id)->first();
+            $file = $request->file('file');
+            $originalName = $file->getClientOriginalName();
 
-            return $this->sendResponse(new MateriResource($materi), 'materi created successfully');
+            // Generate a unique filename
+            $fileName = $this->generateUniqueFileName($originalName);
+
+            $file->move(public_path('materi'), $fileName);
+
+            $path = asset('materi/' . $fileName);
+            $materi = new Materi();
+            $materi->createdBy = $dosen->id;
+            $materi->id_mapel = $request->id_mapel;
+            $materi->id_kelas = $mapel->id_class;
+            $materi->judul = $request->judul;
+            $materi->deskripsi = $request->deskripsi;
+            $materi->file = $path;
+            $materi->save();
+            return $this->sendResponse($materi, 'materi created successfully');
         } catch (\Throwable $th) {
             return $this->sendError('error creating materi', $th->getMessage());
         }
+    }
+
+    public function download($filename)
+    {
+        $path = storage_path('app/uploads/' . '5CjapeV1HYvzooyrnIjs8C3jQTPHddwYvX0Y2Yjk.pdf');
+
+        // return "hello";
+        // if (file_exists($path)) {
+        return response()->download(public_path('sample.jpeg'));
+        // }
+
+        // if (file_exists($path)) {
+        //     return new BinaryFileResponse($path, 200, [
+        //         'Content-Type' => 'application/octet-stream',
+        //         'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        //     ]);
+        // }
+
+        // if (file_exists($path)) {
+        //     return response()->download($path, 'tes.pdf', [], Response::HTTP_OK, [
+        //         'Content-Type' => 'application/octet-stream',
+        //     ]);
+        // }
+
+        abort(404);
     }
 
     /**
@@ -102,19 +147,26 @@ class MateriController extends Controller
     public function update(Request $request, Materi $Materi, $id)
     {
         try {
-            $request->validate([
-                'idMapel' => 'required',
-                'idKelas' => 'required',
-                'judul' => 'required|string|max:255',
-                'deskripsi' => 'required|string|max:255',
-                'file' => 'nullable|string|max:255',
-            ]);
-            $materi = Materi::findOrFail($id);
-            $materi->idMapel = $request->idMapel;
-            $materi->idKelas = $request->idKelas;
+            $mapel = MataPelajaran::findOrFail($request->id_mapel);
+            $user = Auth::user();
+            $dosen = Dosen::where("id_user", $user->id)->first();
+
+            $file = $request->file('file');
+            $originalName = $file->getClientOriginalName();
+
+            // Generate a unique filename
+            $fileName = $this->generateUniqueFileName($originalName);
+
+            $file->move(public_path('materi'), $fileName);
+            $path = asset('materi/' . $fileName);
+
+            $materi = new Materi();
+            $materi->createdBy = $dosen->id;
+            $materi->id_mapel = $request->id_mapel;
+            $materi->id_kelas = $mapel->id_class;
             $materi->judul = $request->judul;
             $materi->deskripsi = $request->deskripsi;
-            $materi->file = $request->file;
+            $materi->file = $path;
             $materi->save();
             return $this->sendResponse($materi, 'materi updated successfully');
         } catch (\Throwable $th) {
@@ -137,5 +189,21 @@ class MateriController extends Controller
         } catch (\Throwable $th) {
             return $this->sendError("error deleting materi", $th->getMessage());
         }
+    }
+
+    private function generateUniqueFileName($originalName)
+    {
+        $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+        $filename = pathinfo($originalName, PATHINFO_FILENAME);
+
+        $uniqueName = Str::slug($filename) . '-' . Str::random(8) . '.' . $extension;
+
+        // Check if the generated filename already exists
+        if (file_exists(public_path('uploads/' . $uniqueName))) {
+            // Generate a new unique filename recursively
+            return $this->generateUniqueFileName($originalName);
+        }
+
+        return $uniqueName;
     }
 }
