@@ -77,7 +77,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/dosen/materi/{id}', [MateriController::class, "update"])->middleware('userAkses:dosen');
     Route::delete('/dosen/materi/{id}', [MateriController::class, "destroy"])->middleware('userAkses:dosen');
 
-    Route::post('/dosen/mapel/tugas', [TugasController::class, "store"])->middleware('userAkses:dosen');
+    Route::post('/dosen/tugas', [TugasController::class, "store"])->middleware('userAkses:dosen');
     Route::get('/dosen/mapel/{id}/tugas', [TugasController::class, "show"])->middleware('userAkses:dosen');
     Route::put('/dosen/tugas/{id}', [TugasController::class, "update"])->middleware('userAkses:dosen');
     Route::delete('/dosen/tugas/{id}', [TugasController::class, "destroy"])->middleware('userAkses:dosen');
