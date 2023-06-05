@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests;
+use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\Storage;
 
 class MateriController extends BaseController
@@ -32,7 +33,29 @@ class MateriController extends BaseController
     public function index()
     {
         try {
-            $materi = (MateriResource::collection(Materi::all()));
+            $user = Auth::user();
+            $dosen = Dosen::where("id_user", $user->id)->first();
+            $materi = Materi::where("createdBy", $dosen->id)
+                ->join('mata_pelajarans', 'materis.id_mapel', '=', 'mata_pelajarans.id')
+                ->select('materis.*', 'mata_pelajarans.nama_mapel as nama_mapel')->get();
+            return $this->sendResponse($materi, "materi retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error materi retrieved successfully", $th->getMessage());
+        }
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listMateri()
+    {
+        try {
+            $user = Auth::user();
+            $dosen = Mahasiswa::where("id_user", $user->id)->first();
+            $materi = Materi::where("id_kelas", $dosen->id_class)
+                ->join('mata_pelajarans', 'materis.id_mapel', '=', 'mata_pelajarans.id')
+                ->select('materis.*', 'mata_pelajarans.nama_mapel as nama_mapel')->get();
             return $this->sendResponse($materi, "materi retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error materi retrieved successfully", $th->getMessage());
@@ -68,9 +91,9 @@ class MateriController extends BaseController
             // Generate a unique filename
             $fileName = $this->generateUniqueFileName($originalName);
 
-            $file->move(public_path('materi'), $fileName);
+            $file->move(public_path('materi'), $originalName);
 
-            $path = asset('materi/' . $fileName);
+            $path = asset('materi/' . $originalName);
             $materi = new Materi();
             $materi->createdBy = $dosen->id;
             $materi->id_mapel = $request->id_mapel;
@@ -84,32 +107,7 @@ class MateriController extends BaseController
             return $this->sendError('error creating materi', $th->getMessage());
         }
     }
-
-    public function download($filename)
-    {
-        $path = storage_path('app/uploads/' . '5CjapeV1HYvzooyrnIjs8C3jQTPHddwYvX0Y2Yjk.pdf');
-
-        // return "hello";
-        // if (file_exists($path)) {
-        return response()->download(public_path('sample.jpeg'));
-        // }
-
-        // if (file_exists($path)) {
-        //     return new BinaryFileResponse($path, 200, [
-        //         'Content-Type' => 'application/octet-stream',
-        //         'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-        //     ]);
-        // }
-
-        // if (file_exists($path)) {
-        //     return response()->download($path, 'tes.pdf', [], Response::HTTP_OK, [
-        //         'Content-Type' => 'application/octet-stream',
-        //     ]);
-        // }
-
-        abort(404);
-    }
-
+    
     /**
      * Display the specified resource.
      *
