@@ -77,6 +77,12 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/dosen/materi/{id}', [MateriController::class, "update"])->middleware('userAkses:dosen');
     Route::delete('/dosen/materi/{id}', [MateriController::class, "destroy"])->middleware('userAkses:dosen');
 
+    Route::post('/dosen/mapel/tugas', [TugasController::class, "store"])->middleware('userAkses:dosen');
+    Route::get('/dosen/mapel/{id}/tugas', [TugasController::class, "show"])->middleware('userAkses:dosen');
+    Route::put('/dosen/tugas/{id}', [TugasController::class, "update"])->middleware('userAkses:dosen');
+    Route::delete('/dosen/tugas/{id}', [TugasController::class, "destroy"])->middleware('userAkses:dosen');
+
+    
     //student role
     Route::get('/mahasiswa/mapel', [MataPelajaranController::class, "listSubjectStudent"])->middleware('userAkses:mahasiswa');
     Route::get('/mahasiswa/mapel/{id}', [MataPelajaranController::class, "show"])->middleware('userAkses:mahasiswa');
@@ -100,18 +106,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('mata_pelajaran', MataPelajaran::class);
 });
-// Mata Pelajaran
-
-// Materi
-Route::get('/materi', [MateriController::class, 'index']);
-Route::get('/materi/show/{id}', [MateriController::class, 'show']);
-Route::put('/materi/update/{id}', [MateriController::class, 'update']);
-Route::delete('/materi/delete/{id}', [MateriController::class, 'destroy']);
-
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::apiResource('materi', MateriController::class);
-});
-// Materi
 
 // Tugas
 Route::get('/tugas', [TugasController::class, 'index']);

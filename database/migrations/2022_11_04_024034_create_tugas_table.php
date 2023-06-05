@@ -14,15 +14,17 @@ return new class extends Migration
     public function up()
     {
         Schema::create('tugas', function (Blueprint $table) {
-            $table->id('idTugas');
-            $table->unsignedBigInteger('idMateri');
-            $table->string('judul_tugas');
-            $table->string('deskripsi_tugas');
+            $table->id();
+            $table->unsignedBigInteger('id_mapel');
+            $table->unsignedBigInteger('id_dosen');
+            $table->string('title');
+            $table->string('description');
             $table->timestamps();
         });
 
         Schema::table('tugas', function (Blueprint $table) {
-            $table->foreign('idMateri')->references('id')->on('materis');
+            $table->foreign('id_mapel')->references('id')->on('mata_pelajarans');
+            $table->foreign('id_dosen')->references('id')->on('dosens');
         });
     }
 

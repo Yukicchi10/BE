@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tugas;
+use App\Http\Controllers\API\BaseController;
+use App\Models\tugas;
 use Illuminate\Http\Request;
 use App\Http\Resources\TugasResource;
+use App\Models\Dosen;
+use Illuminate\Support\Facades\Auth;
 
-class TugasController extends Controller
+class TugasController extends BaseController
 {
     const VALIDATION_RULES = [
-        'idMateri' => 'required',
-        'judul_tugas' => 'required|string|max:255',
-        'deskripsi_tugas' => 'required|string|max:255',
+        'id_mapel' => 'required',
+        'title' => 'required|string|max:255',
+        'description' => 'required|string|max:255',
     ];
     const NumPaginate = 5;
     /**
@@ -49,13 +52,16 @@ class TugasController extends Controller
     {
         try {
             $this->validate($request, self::VALIDATION_RULES);
+            $user = Auth::user();
+            $dosen = Dosen::where("id_user", $user->id)->first();
             $tugas = new Tugas();
-            $tugas->idMateri = $request->idMateri;
-            $tugas->judul_tugas = $request->judul_tugas;
-            $tugas->deskripsi_tugas = $request->deskripsi_tugas;
+            $tugas->id_mapel = $request->id_mapel;
+            $tugas->id_dosen = $dosen->id;
+            $tugas->title = $request->title;
+            $tugas->description = $request->description;
             $tugas->save();
 
-            return $this->sendResponse(new TugasResource($tugas), 'tugas created successfully');
+            return $this->sendResponse($tugas, 'tugas created successfully');
         } catch (\Throwable $th) {
             return $this->sendError('error creating tugas', $th->getMessage());
         }
@@ -67,11 +73,12 @@ class TugasController extends Controller
      * @param  \App\Models\Tugas  $tugas
      * @return \Illuminate\Http\Response
      */
-    public function show(Tugas $tugas, $id)
+    public function show($id)
     {
         try {
-            $tugas = Tugas::findOrFail($id);
-            return $this->sendResponse(new TugasResource($tugas), "tugas retrieved successfully");
+
+            $tugas = Tugas::where("id_mapel", $id)->get();
+            return $this->sendResponse($tugas, "tugas retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving tugas", $th->getMessage());
         }
@@ -99,14 +106,14 @@ class TugasController extends Controller
     {
         try {
             $request->validate([
-                'idMateri' => 'required',
-                'judul_tugas' => 'required|string|max:255',
-                'deskripsi_tugas' => 'required|string|max:255',
+                'id_mapel' => 'required',
+                'title' => 'required|string|max:255',
+                'description' => 'required|string|max:255',
             ]);
             $tugas = Tugas::findOrFail($id);
-            $tugas->idMateri = $request->idMateri;
-            $tugas->judul_tugas = $request->judul_tugas;
-            $tugas->deskripsi_tugas = $request->deskripsi_tugas;
+            $tugas->id_mapel = $request->id_mapel;
+            $tugas->title = $request->title;
+            $tugas->description = $request->description;
             $tugas->save();
             return $this->sendResponse($tugas, 'tugas updated successfully');
         } catch (\Throwable $th) {

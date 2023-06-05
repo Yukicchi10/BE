@@ -18,8 +18,5 @@ class TugasMurid extends Model
         return $this->belongSTo(Siswa::class, 'idSiswa', 'idSiswa');
     }
 
-    public function tugas()
-    {
-        return $this->belongSTo(Tugas::class, 'idTugas', 'idTugas');
-    }
+    
 }
