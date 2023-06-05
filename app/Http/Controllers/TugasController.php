@@ -7,6 +7,9 @@ use App\Models\tugas;
 use Illuminate\Http\Request;
 use App\Http\Resources\TugasResource;
 use App\Models\Dosen;
+use App\Models\Kelas;
+use App\Models\Mahasiswa;
+use App\Models\MataPelajaran;
 use Illuminate\Support\Facades\Auth;
 
 class TugasController extends BaseController
@@ -25,10 +28,30 @@ class TugasController extends BaseController
     public function index()
     {
         try {
-            $tugas = (TugasResource::collection(Tugas::all()));
+            $user = Auth::user();
+            $dosen = Dosen::where("id_user", $user->id)->first();
+            $tugas = Tugas::where("id_dosen", $dosen->id)->get();
             return $this->sendResponse($tugas, "tugas retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error tugas retrieved successfully", $th->getMessage());
+        }
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listTugas()
+    {
+        try {
+            $user = Auth::user();
+            $mahasiswa = Mahasiswa::where("id_user", $user->id)->first();
+            $tugas = Tugas::where("id_kelas", $mahasiswa->id_class)
+                ->join('mata_pelajarans', 'tugas.id_mapel', '=', 'mata_pelajarans.id')
+                ->select('tugas.*', 'mata_pelajarans.nama_mapel as nama_mapel')->get();
+            return $this->sendResponse($tugas, "materi retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error materi retrieved successfully", $th->getMessage());
         }
     }
 
@@ -54,7 +77,9 @@ class TugasController extends BaseController
             $this->validate($request, self::VALIDATION_RULES);
             $user = Auth::user();
             $dosen = Dosen::where("id_user", $user->id)->first();
+            $mapel = MataPelajaran::findOrFail($request->id_mapel);
             $tugas = new Tugas();
+            $tugas->id_kelas = $mapel->id_class;
             $tugas->id_mapel = $request->id_mapel;
             $tugas->id_dosen = $dosen->id;
             $tugas->title = $request->title;
@@ -73,11 +98,12 @@ class TugasController extends BaseController
      * @param  \App\Models\Tugas  $tugas
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
         try {
-
-            $tugas = Tugas::where("id_mapel", $id)->get();
+            $user = Auth::user();
+            $dosen = Dosen::where("id_user", $user->id)->first();
+            $tugas = Tugas::where("id_dosen", $dosen->id)->get();
             return $this->sendResponse($tugas, "tugas retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving tugas", $th->getMessage());

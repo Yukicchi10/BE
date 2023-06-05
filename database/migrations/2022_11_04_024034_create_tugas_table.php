@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('tugas', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_kelas');
             $table->unsignedBigInteger('id_mapel');
             $table->unsignedBigInteger('id_dosen');
             $table->string('title');
@@ -23,6 +24,7 @@ return new class extends Migration
         });
 
         Schema::table('tugas', function (Blueprint $table) {
+            $table->foreign('id_kelas')->references('id')->on('kelas');
             $table->foreign('id_mapel')->references('id')->on('mata_pelajarans');
             $table->foreign('id_dosen')->references('id')->on('dosens');
         });

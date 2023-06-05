@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController;
+use App\Models\Dosen;
 use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\DB;
 
@@ -26,6 +27,28 @@ class KelasController extends BaseController
             // $kelas = (KelasResource::collection(Kelas::all()));
             $kelas = DB::table('kelas')->get();
             return $this->sendResponse($kelas, "kelas retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error kelas retrieved successfully", $th->getMessage());
+        }
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function dashboard()
+    {
+        try {
+            $kelas = Kelas::count();
+            $dosen = Dosen::count();
+            $mahasiswa = Mahasiswa::count();
+            $res  = [
+                'kelas' => $kelas,
+                'dosen' => $dosen,
+                'mahasiswa' => $mahasiswa
+            ];
+            return $this->sendResponse($res, "dashboard retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error kelas retrieved successfully", $th->getMessage());
         }
@@ -70,7 +93,7 @@ class KelasController extends BaseController
      */
     public function show($id)
     {
-        
+
         try {
             $kelas = Kelas::findOrFail($id);
             $mahasiswa = Mahasiswa::where('id_class', $id)->get();

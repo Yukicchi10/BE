@@ -38,7 +38,7 @@ Route::post('/auth/logout', [AuthenticatedController::class, 'logout']);
 Route::post('/auth/refresh', [AuthenticatedController::class, 'refresh']);
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/student/{id}', [MahasiswaController::class, "show"])->middleware('userAkses:mahasiswa');
+    Route::get('/admin/dashboard', [KelasController::class, "dashboard"])->middleware('userAkses:admin');
 
     // Admin role, to manage lecturer
     Route::get('/lecturer', [DosenController::class, "index"])->middleware('userAkses:admin');
@@ -77,8 +77,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/dosen/materi/{id}', [MateriController::class, "update"])->middleware('userAkses:dosen');
     Route::delete('/dosen/materi/{id}', [MateriController::class, "destroy"])->middleware('userAkses:dosen');
 
+    Route::get('/dosen/tugas', [TugasController::class, "index"])->middleware('userAkses:dosen');
     Route::post('/dosen/tugas', [TugasController::class, "store"])->middleware('userAkses:dosen');
-    Route::get('/dosen/mapel/{id}/tugas', [TugasController::class, "show"])->middleware('userAkses:dosen');
     Route::put('/dosen/tugas/{id}', [TugasController::class, "update"])->middleware('userAkses:dosen');
     Route::delete('/dosen/tugas/{id}', [TugasController::class, "destroy"])->middleware('userAkses:dosen');
 
@@ -87,6 +87,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mahasiswa/mapel', [MataPelajaranController::class, "listSubjectStudent"])->middleware('userAkses:mahasiswa');
     Route::get('/mahasiswa/mapel/{id}', [MataPelajaranController::class, "show"])->middleware('userAkses:mahasiswa');
     Route::get('/mahasiswa/materi', [MateriController::class, "listMateri"])->middleware('userAkses:mahasiswa');
+    Route::get('/mahasiswa/tugas', [TugasController::class, "listTugas"])->middleware('userAkses:mahasiswa');
 
 });
 

@@ -7,6 +7,7 @@ use App\Models\Kelas;
 use App\Models\Mahasiswa;
 use App\Models\MataPelajaran;
 use App\Models\materi;
+use App\Models\tugas;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -96,5 +97,14 @@ class UserSeeder extends Seeder
             'file'=> 'http://localhost:8000/materi/dummy.pdf'
         ];
         materi::create($materi);
+
+        $tugas = [
+            'id_kelas'=>'1',
+            'id_mapel' => '1',
+            'id_dosen' => '1',
+            'title' => 'Tugas HTML',
+            'description' => 'Buatlah essay tentang sejarah website dan HTML'
+        ];
+        tugas::create($tugas);
     }
 }
