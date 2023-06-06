@@ -8,6 +8,7 @@ use App\Models\Mahasiswa;
 use App\Models\MataPelajaran;
 use App\Models\materi;
 use App\Models\tugas;
+use App\Models\TugasMurid;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -106,5 +107,13 @@ class UserSeeder extends Seeder
             'description' => 'Buatlah essay tentang sejarah website dan HTML'
         ];
         tugas::create($tugas);
+
+        $tugasMurid = [
+            'id_tugas' => '1',
+            'id_mahasiswa' => '1',
+            'file' => 'http://localhost:8000/tugas/dummy.pdf',
+            'nilai' => '90',
+        ];
+        TugasMurid::create($tugasMurid);
     }
 }

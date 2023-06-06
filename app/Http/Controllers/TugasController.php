@@ -10,6 +10,7 @@ use App\Models\Dosen;
 use App\Models\Kelas;
 use App\Models\Mahasiswa;
 use App\Models\MataPelajaran;
+use App\Models\TugasMurid;
 use Illuminate\Support\Facades\Auth;
 
 class TugasController extends BaseController
@@ -98,12 +99,32 @@ class TugasController extends BaseController
      * @param  \App\Models\Tugas  $tugas
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
         try {
-            $user = Auth::user();
-            $dosen = Dosen::where("id_user", $user->id)->first();
-            $tugas = Tugas::where("id_dosen", $dosen->id)->get();
+            $user= Auth::user();
+            $mahasiswa = Mahasiswa::where("id_user", $user->id)->get();
+            $tugas = Tugas::findOrFail($id);
+            $tugasMurid = TugasMurid::where("id_tugas", $id)->where("id_mahasiswa", $mahasiswa->id)->get();
+            $tugas->pengumpulan = $tugasMurid;
+            return $this->sendResponse($tugas, "tugas retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error retrieving tugas", $th->getMessage());
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Tugas  $tugas
+     * @return \Illuminate\Http\Response
+     */
+    public function detailTugas($id)
+    {
+        try {
+            $tugas = Tugas::findOrFail($id);
+            $tugasMurid = TugasMurid::where("id_tugas", $id)->get();
+            $tugas->pengumpulan = $tugasMurid;
             return $this->sendResponse($tugas, "tugas retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving tugas", $th->getMessage());

@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\TugasMurid;
 use Illuminate\Http\Request;
 use App\Http\Resources\TugasMuridResource;
+use App\Models\Mahasiswa;
+use Illuminate\Support\Facades\Auth;
 
-class TugasMuridController extends Controller
+class TugasMuridController extends BaseController
 {
     const VALIDATION_RULES = [
-        'idTugas' => 'required',
-        'idSiswa' => 'required',
-        'file' => 'required|string|max:255',
-        'nilai' => 'required|string|max:255',
-        'status' => 'required|max:255',
+        'id_tugas' => 'required',
     ];
     const NumPaginate = 5;
     /**
@@ -51,15 +50,23 @@ class TugasMuridController extends Controller
     {
         try {
             $this->validate($request, self::VALIDATION_RULES);
+            $user = Auth::user();
+            $mahasiswa = Mahasiswa::where("id_user", $user->id)->first();
+
+            $file = $request->file('file');
+            $originalName = $file->getClientOriginalName();
+
+            $file->move(public_path('materi'), $originalName);
+            $path = asset('materi/' . $originalName);
+
             $tugasMurid = new TugasMurid();
-            $tugasMurid->idTugas = $request->idTugas;
-            $tugasMurid->idMurid = $request->idMurid;
-            $tugasMurid->file = $request->file;
-            $tugasMurid->nilai = $request->nilai;
-            $tugasMurid->status = $request->status;
+            $tugasMurid->id_tugas = $request->id_tugas;
+            $tugasMurid->id_mahasiswa = $mahasiswa->id;
+            $tugasMurid->file = $path;
+            $tugasMurid->nilai = 0;
             $tugasMurid->save();
 
-            return $this->sendResponse(new TugasMuridResource($tugasMurid), 'tugasMurid created successfully');
+            return $this->sendResponse($tugasMurid, 'tugasMurid created successfully');
         } catch (\Throwable $th) {
             return $this->sendError('error creating tugasMurid', $th->getMessage());
         }
@@ -102,19 +109,8 @@ class TugasMuridController extends Controller
     public function update(Request $request, TugasMurid $tugasMurid, $id)
     {
         try {
-            $request->validate([
-                'idTugas' => 'required',
-                'idSiswa' => 'required',
-                'file' => 'required|string|max:255',
-                'nilai' => 'required|string|max:255',
-                'status' => 'required|max:255',
-            ]);
             $tugasMurid = TugasMurid::findOrFail($id);
-            $tugasMurid->idTugas = $request->idTugas;
-            $tugasMurid->idMurid = $request->idMurid;
-            $tugasMurid->file = $request->file;
             $tugasMurid->nilai = $request->nilai;
-            $tugasMurid->status = $request->status;
             $tugasMurid->save();
             return $this->sendResponse($tugasMurid, 'tugasMurid updated successfully');
         } catch (\Throwable $th) {

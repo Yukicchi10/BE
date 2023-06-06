@@ -11,7 +11,7 @@ class TugasMurid extends Model
     protected $table = 'tugas_murids';
     protected $guarded = [];
 
-    protected $primaryKey = 'idTugasMurid';
+    protected $primaryKey = 'id';
 
     public function siswa()
     {

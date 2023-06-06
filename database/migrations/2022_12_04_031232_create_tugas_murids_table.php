@@ -14,18 +14,17 @@ return new class extends Migration
     public function up()
     {
         Schema::create('tugas_murids', function (Blueprint $table) {
-            $table->id('idTugasMurid');
-            $table->unsignedBigInteger('idTugas');
-            $table->unsignedBigInteger('idMahasiswa');
+            $table->id();
+            $table->unsignedBigInteger('id_tugas');
+            $table->unsignedBigInteger('id_mahasiswa');
             $table->string('file');
             $table->string('nilai');
-            $table->enum('status', ['selesai', 'belum selesai']);
             $table->timestamps();
         });
 
         Schema::table('tugas_murids', function (Blueprint $table) {
-            $table->foreign('idTugas')->references('id')->on('tugas');
-            $table->foreign('idMahasiswa')->references('id')->on('mahasiswas');
+            $table->foreign('id_tugas')->references('id')->on('tugas');
+            $table->foreign('id_mahasiswa')->references('id')->on('mahasiswas');
         });
     }
 
