@@ -56,13 +56,14 @@ class TugasMuridController extends BaseController
             $file = $request->file('file');
             $originalName = $file->getClientOriginalName();
 
-            $file->move(public_path('materi'), $originalName);
-            $path = asset('materi/' . $originalName);
+            $file->move(public_path('tugas'), $originalName);
+            $path = asset('tugas/' . $originalName);
 
             $tugasMurid = new TugasMurid();
             $tugasMurid->id_tugas = $request->id_tugas;
             $tugasMurid->id_mahasiswa = $mahasiswa->id;
             $tugasMurid->file = $path;
+            $tugasMurid->filename = $originalName;
             $tugasMurid->nilai = 0;
             $tugasMurid->save();
 

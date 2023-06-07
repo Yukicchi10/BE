@@ -102,8 +102,8 @@ class TugasController extends BaseController
     public function show($id)
     {
         try {
-            $user= Auth::user();
-            $mahasiswa = Mahasiswa::where("id_user", $user->id)->get();
+            $user = Auth::user();
+            $mahasiswa = Mahasiswa::where("id_user", $user->id)->first();
             $tugas = Tugas::findOrFail($id);
             $tugasMurid = TugasMurid::where("id_tugas", $id)->where("id_mahasiswa", $mahasiswa->id)->get();
             $tugas->pengumpulan = $tugasMurid;
@@ -123,7 +123,10 @@ class TugasController extends BaseController
     {
         try {
             $tugas = Tugas::findOrFail($id);
-            $tugasMurid = TugasMurid::where("id_tugas", $id)->get();
+            $tugasMurid = TugasMurid::where("id_tugas", $id)
+                ->join('mahasiswas', 'tugas_murids.id_mahasiswa', '=', 'mahasiswas.id')
+                ->select('tugas_murids.*', 'mahasiswas.nama as nama_mahasiswa', 'mahasiswas.nim as nim')
+                ->get();
             $tugas->pengumpulan = $tugasMurid;
             return $this->sendResponse($tugas, "tugas retrieved successfully");
         } catch (\Throwable $th) {

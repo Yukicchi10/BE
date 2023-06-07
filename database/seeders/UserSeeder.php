@@ -99,21 +99,45 @@ class UserSeeder extends Seeder
         ];
         materi::create($materi);
 
-        $tugas = [
+        $tugas = [[
             'id_kelas'=>'1',
             'id_mapel' => '1',
             'id_dosen' => '1',
             'title' => 'Tugas HTML',
             'description' => 'Buatlah essay tentang sejarah website dan HTML'
-        ];
-        tugas::create($tugas);
+        ],[
+            'id_kelas'=>'1',
+            'id_mapel' => '1',
+            'id_dosen' => '1',
+            'title' => 'Tugas Pratikum ',
+            'description' => 'Buatlah website sederhana, kirim laporannya dalam bentuk Pdf'
+        ],[
+            'id_kelas'=>'1',
+            'id_mapel' => '1',
+            'id_dosen' => '1',
+            'title' => 'Tugas Framework',
+            'description' => 'Sebutkan dan Jelaskan Jenis Jenis Framework dalam pengembangan website!'
+        ]];
 
-        $tugasMurid = [
+        foreach ($tugas as $key => $val) {
+            tugas::create($val);
+        }
+
+        $tugasMurid = [[
             'id_tugas' => '1',
             'id_mahasiswa' => '1',
             'file' => 'http://localhost:8000/tugas/dummy.pdf',
+            'filename' => 'dummy.pdf',
             'nilai' => '90',
-        ];
-        TugasMurid::create($tugasMurid);
+        ],[
+            'id_tugas' => '2',
+            'id_mahasiswa' => '1',
+            'file' => 'http://localhost:8000/tugas/dummy.pdf',
+            'filename' => 'dummy.pdf',
+            'nilai' => '0',
+        ]];
+        foreach ($tugasMurid as $key => $val) {
+            TugasMurid::create($val);
+        }
     }
 }

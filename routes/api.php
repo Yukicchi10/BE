@@ -79,7 +79,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/dosen/materi/{id}', [MateriController::class, "destroy"])->middleware('userAkses:dosen');
 
     Route::get('/dosen/tugas', [TugasController::class, "index"])->middleware('userAkses:dosen');
-    Route::get('/dosen/tugas/{id}', [TugasController::class, "show"])->middleware('userAkses:dosen');
+    Route::get('/dosen/tugas/{id}', [TugasController::class, "detailTugas"])->middleware('userAkses:dosen');
     Route::post('/dosen/tugas', [TugasController::class, "store"])->middleware('userAkses:dosen');
     Route::put('/dosen/tugas/{id}', [TugasController::class, "update"])->middleware('userAkses:dosen');
     Route::delete('/dosen/tugas/{id}', [TugasController::class, "destroy"])->middleware('userAkses:dosen');
@@ -91,7 +91,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mahasiswa/mapel/{id}', [MataPelajaranController::class, "show"])->middleware('userAkses:mahasiswa');
     Route::get('/mahasiswa/materi', [MateriController::class, "listMateri"])->middleware('userAkses:mahasiswa');
     Route::get('/mahasiswa/tugas', [TugasController::class, "listTugas"])->middleware('userAkses:mahasiswa');
-    Route::get('/mahasiswa/tugas/{id}', [TugasController::class, "detailTugas"])->middleware('userAkses:mahasiswa');
+    Route::get('/mahasiswa/tugas/{id}', [TugasController::class, "show"])->middleware('userAkses:mahasiswa');
     Route::post('/mahasiswa/tugas/upload', [TugasMuridController::class, "store"])->middleware('userAkses:mahasiswa');
 
 });

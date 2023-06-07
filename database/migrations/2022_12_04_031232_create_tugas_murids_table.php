@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_tugas');
             $table->unsignedBigInteger('id_mahasiswa');
             $table->string('file');
+            $table->string('filename');
             $table->string('nilai');
             $table->timestamps();
         });

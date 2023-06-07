@@ -135,7 +135,6 @@ class MataPelajaranController extends BaseController
                 ->join('dosens', 'mata_pelajarans.id_dosen', '=', 'dosens.id')
                 ->select('mata_pelajarans.*', 'dosens.nama as teacher_name')
                 ->get();
-            // $mapel->mahasiswa = $mahasiswa;
             $mapel->materi = $materi;
             $mapel->tugas = $tugas;
             return $this->sendResponse($mapel, "mapel retrieved successfully");
