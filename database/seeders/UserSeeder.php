@@ -2,11 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\Attendance;
 use App\Models\Dosen;
 use App\Models\Kelas;
 use App\Models\Mahasiswa;
 use App\Models\MataPelajaran;
 use App\Models\materi;
+use App\Models\StudentAttendance;
 use App\Models\tugas;
 use App\Models\TugasMurid;
 use App\Models\User;
@@ -139,5 +141,19 @@ class UserSeeder extends Seeder
         foreach ($tugasMurid as $key => $val) {
             TugasMurid::create($val);
         }
+
+        $attendance = [
+            'id_mapel' => '1',
+            'pertemuan' => '1'
+        ];
+        Attendance::create($attendance);
+
+        $studentAttendance = [
+            'id_pertemuan' => '1',
+            'id_mahasiswa' => '1',
+            'status' => 'Hadir',
+            'keterangan' => ''
+        ];
+        StudentAttendance::create($studentAttendance);
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataPelajaranController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\StudentAttendanceController;
 use App\Http\Controllers\TugasController;
 use App\Http\Controllers\TugasMuridController;
 use App\Models\MataPelajaran;
@@ -84,7 +85,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/dosen/tugas/{id}', [TugasController::class, "update"])->middleware('userAkses:dosen');
     Route::delete('/dosen/tugas/{id}', [TugasController::class, "destroy"])->middleware('userAkses:dosen');
     Route::put('/dosen/tugas/penilaian/{id}', [TugasMuridController::class, "update"])->middleware('userAkses:dosen');
-
+    Route::post('/dosen/absen/siswa', [StudentAttendanceController::class, "store"])->middleware('userAkses:dosen');
     
     //student role
     Route::get('/mahasiswa/mapel', [MataPelajaranController::class, "listSubjectStudent"])->middleware('userAkses:mahasiswa');

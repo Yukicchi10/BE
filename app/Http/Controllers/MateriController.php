@@ -10,11 +10,7 @@ use App\Models\Dosen;
 use App\Models\MataPelajaran;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\Response;
-use App\Http\Requests;
 use App\Models\Mahasiswa;
-use Illuminate\Support\Facades\Storage;
 
 class MateriController extends BaseController
 {

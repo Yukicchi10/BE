@@ -6,6 +6,7 @@ use App\Http\Controllers\API\BaseController;
 use Illuminate\Http\Request;
 use App\Models\MataPelajaran;
 use App\Http\Resources\MataPelajaranResource;
+use App\Models\Attendance;
 use App\Models\Dosen;
 use App\Models\Mahasiswa;
 use App\Models\materi;
@@ -131,12 +132,12 @@ class MataPelajaranController extends BaseController
             $mapel = MataPelajaran::findOrFail($id);
             $materi = Materi::where('id_mapel', $id)->get();
             $tugas = Tugas::where('id_mapel', $id)->get();
-            $subjects = DB::table('mata_pelajarans')->where('id_class', $id)
-                ->join('dosens', 'mata_pelajarans.id_dosen', '=', 'dosens.id')
-                ->select('mata_pelajarans.*', 'dosens.nama as teacher_name')
-                ->get();
+            $pertemuan = Attendance::where("id_mapel", $id)->get();
+            $mahasiswa = Mahasiswa::where("id_class", $mapel->id_class)->get();
             $mapel->materi = $materi;
             $mapel->tugas = $tugas;
+            $mapel->pertemuan = $pertemuan;
+            $mapel->mahasiswa = $mahasiswa;
             return $this->sendResponse($mapel, "mapel retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving mapel", $th->getMessage());
