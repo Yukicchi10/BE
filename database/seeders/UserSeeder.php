@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Attendance;
+use App\Models\Calendar;
 use App\Models\Dosen;
 use App\Models\Kelas;
 use App\Models\Mahasiswa;
@@ -154,5 +155,12 @@ class UserSeeder extends Seeder
             'status' => 'Hadir',
         ];
         StudentAttendance::create($studentAttendance);
+
+        $calendar = [
+            'title' => 'Ujian Akhir Semester',
+            'start' => '2023-06-19 07:01:04',
+            'end' => '2023-06-23 07:01:04'
+        ];
+        Calendar::create($calendar);
     }
 }
