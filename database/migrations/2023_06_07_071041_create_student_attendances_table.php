@@ -17,8 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_pertemuan');
             $table->unsignedBigInteger('id_mahasiswa');
-            $table->enum('status', ['Hadir', 'Sakit', 'Izin', 'Tanpa Keterangan'])->nullable();
-            $table->string('keterangan');
+            $table->enum('status', ['Hadir', 'Sakit', 'Izin', 'Tanpa Keterangan','-'])->nullable();
             $table->timestamps();
 
             $table->foreign('id_pertemuan')->references('id')->on('attendances'); 

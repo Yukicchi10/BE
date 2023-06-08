@@ -85,6 +85,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/dosen/tugas/{id}', [TugasController::class, "update"])->middleware('userAkses:dosen');
     Route::delete('/dosen/tugas/{id}', [TugasController::class, "destroy"])->middleware('userAkses:dosen');
     Route::put('/dosen/tugas/penilaian/{id}', [TugasMuridController::class, "update"])->middleware('userAkses:dosen');
+    Route::post('/dosen/pertemuan', [StudentAttendanceController::class, "add"])->middleware('userAkses:dosen');
     Route::post('/dosen/absen/siswa', [StudentAttendanceController::class, "store"])->middleware('userAkses:dosen');
     
     //student role

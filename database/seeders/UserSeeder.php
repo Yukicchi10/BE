@@ -55,7 +55,7 @@ class UserSeeder extends Seeder
         ];
         Dosen::create($dosen);
 
-        $kelas =[
+        $kelas = [
             'nama_kelas' => 'Teknik Informatika',
             'angkatan' => '2018'
         ];
@@ -80,41 +80,41 @@ class UserSeeder extends Seeder
 
         $mataKuliah = [
             'id_class' => '1',
-            'id_dosen'=> '1',
+            'id_dosen' => '1',
             'nama_mapel' => 'Pemrograman Web',
             'deskripsi_mapel' => 'Pada mata kuliah pemrograman web, Anda akan mempelajari berbagai konsep, teknologi, dan keterampilan yang terkait dengan pengembangan aplikasi web.',
             'room' => 'Lab Komputer A.2.1',
             "sks" => "3",
-            "day"=> "Senin",
+            "day" => "Senin",
             "start_time" => "07.00",
-            "end_time"=>"09.30"
+            "end_time" => "09.30"
         ];
         MataPelajaran::create($mataKuliah);
 
         $materi = [
-            'createdBy'=>'1',
-            'id_mapel'=>'1',
+            'createdBy' => '1',
+            'id_mapel' => '1',
             'id_kelas' => '1',
-            'judul'=> 'Dasar Dasar HTML',
-            'deskripsi'=> 'HTML adalah bahasa markup yang digunakan untuk membangun struktur dasar halaman web. Anda akan mempelajari elemen-elemen HTML, seperti tag, atribut, tautan, gambar, tabel, formulir, dan lain-lain.',
-            'file'=> 'http://localhost:8000/materi/dummy.pdf'
+            'judul' => 'Dasar Dasar HTML',
+            'deskripsi' => 'HTML adalah bahasa markup yang digunakan untuk membangun struktur dasar halaman web. Anda akan mempelajari elemen-elemen HTML, seperti tag, atribut, tautan, gambar, tabel, formulir, dan lain-lain.',
+            'file' => 'http://localhost:8000/materi/dummy.pdf'
         ];
         materi::create($materi);
 
         $tugas = [[
-            'id_kelas'=>'1',
+            'id_kelas' => '1',
             'id_mapel' => '1',
             'id_dosen' => '1',
             'title' => 'Tugas HTML',
             'description' => 'Buatlah essay tentang sejarah website dan HTML'
-        ],[
-            'id_kelas'=>'1',
+        ], [
+            'id_kelas' => '1',
             'id_mapel' => '1',
             'id_dosen' => '1',
             'title' => 'Tugas Pratikum ',
             'description' => 'Buatlah website sederhana, kirim laporannya dalam bentuk Pdf'
-        ],[
-            'id_kelas'=>'1',
+        ], [
+            'id_kelas' => '1',
             'id_mapel' => '1',
             'id_dosen' => '1',
             'title' => 'Tugas Framework',
@@ -131,7 +131,7 @@ class UserSeeder extends Seeder
             'file' => 'http://localhost:8000/tugas/dummy.pdf',
             'filename' => 'dummy.pdf',
             'nilai' => '90',
-        ],[
+        ], [
             'id_tugas' => '2',
             'id_mahasiswa' => '1',
             'file' => 'http://localhost:8000/tugas/dummy.pdf',
@@ -152,7 +152,6 @@ class UserSeeder extends Seeder
             'id_pertemuan' => '1',
             'id_mahasiswa' => '1',
             'status' => 'Hadir',
-            'keterangan' => ''
         ];
         StudentAttendance::create($studentAttendance);
     }

@@ -10,6 +10,7 @@ use App\Models\Attendance;
 use App\Models\Dosen;
 use App\Models\Mahasiswa;
 use App\Models\materi;
+use App\Models\StudentAttendance;
 use App\Models\tugas;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -134,6 +135,12 @@ class MataPelajaranController extends BaseController
             $tugas = Tugas::where('id_mapel', $id)->get();
             $pertemuan = Attendance::where("id_mapel", $id)->get();
             $mahasiswa = Mahasiswa::where("id_class", $mapel->id_class)->get();
+
+            foreach ($pertemuan as $key => $value) {
+                $value->absen = StudentAttendance::where("id_pertemuan", $value->id)
+                ->join('mahasiswas', 'student_attendances.id_mahasiswa', '=', 'mahasiswas.id')
+                ->select('student_attendances.*', 'mahasiswas.nama as nama', 'mahasiswas.nim as nim')->get();
+            }
             $mapel->materi = $materi;
             $mapel->tugas = $tugas;
             $mapel->pertemuan = $pertemuan;
