@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AuthenticatedController;
 use App\Http\Controllers\API\AuthenticatedControllerDosen;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\DiscussionController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MahasiswaController;
@@ -67,6 +68,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/mapel', [MataPelajaranController::class, "store"])->middleware('userAkses:admin');
     Route::put('/admin/mapel/{id}', [MataPelajaranController::class, "update"])->middleware('userAkses:admin');
     Route::delete('/admin/mapel/{id}', [MataPelajaranController::class, "destroy"])->middleware('userAkses:admin');
+
     Route::get('/admin/calendar', [CalendarController::class, "index"])->middleware('userAkses:admin');
     Route::post('/admin/calendar', [CalendarController::class, "store"])->middleware('userAkses:admin');
     Route::delete('/admin/calendar/{id}', [CalendarController::class, "destroy"])->middleware('userAkses:admin');
@@ -87,6 +89,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/dosen/tugas/{id}', [TugasController::class, "update"])->middleware('userAkses:dosen');
     Route::delete('/dosen/tugas/{id}', [TugasController::class, "destroy"])->middleware('userAkses:dosen');
     Route::put('/dosen/tugas/penilaian/{id}', [TugasMuridController::class, "update"])->middleware('userAkses:dosen');
+
     Route::post('/dosen/pertemuan', [StudentAttendanceController::class, "add"])->middleware('userAkses:dosen');
     Route::post('/dosen/absen/siswa', [StudentAttendanceController::class, "store"])->middleware('userAkses:dosen');
     Route::get('/dosen/calendar', [CalendarController::class, "index"])->middleware('userAkses:dosen');
@@ -100,4 +103,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mahasiswa/tugas/{id}', [TugasController::class, "show"])->middleware('userAkses:mahasiswa');
     Route::post('/mahasiswa/tugas/upload', [TugasMuridController::class, "store"])->middleware('userAkses:mahasiswa');
     Route::get('/mahasiswa/calendar', [CalendarController::class, "index"])->middleware('userAkses:mahasiswa');
+
+    // Ruang diskusi
+    Route::get('/mahasiswa/mapel/{id}/thread', [DiscussionController::class, "index"])->middleware('userAkses:mahasiswa');
+    Route::post('/mahasiswa/thread', [DiscussionController::class, "create"])->middleware('userAkses:mahasiswa');
+    Route::delete('/mahasiswa/thread/{id}', [DiscussionController::class, "destroy"])->middleware('userAkses:mahasiswa');
+    Route::post('/mahasiswa/thread/likes', [DiscussionController::class, "store"])->middleware('userAkses:mahasiswa');
 });

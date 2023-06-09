@@ -6,10 +6,13 @@ use App\Models\Attendance;
 use App\Models\Calendar;
 use App\Models\Dosen;
 use App\Models\Kelas;
+use App\Models\Likes;
 use App\Models\Mahasiswa;
 use App\Models\MataPelajaran;
 use App\Models\materi;
+use App\Models\Replies;
 use App\Models\StudentAttendance;
+use App\Models\Thread;
 use App\Models\tugas;
 use App\Models\TugasMurid;
 use App\Models\User;
@@ -65,7 +68,7 @@ class UserSeeder extends Seeder
         $mahasiswa = [
             'id_user' => '3',
             'id_class' => '1',
-            'nama' => 'Budi Sudarmaji',
+            'nama' => 'Budi yanto',
             'nim' => '2018749273',
             'tempat' => 'Bandung',
             'tgl_lahir' => '2000-12-11 10:59:52',
@@ -162,5 +165,25 @@ class UserSeeder extends Seeder
             'end' => '2023-06-23 07:01:04'
         ];
         Calendar::create($calendar);
+
+        $thread = [
+            'id_mapel' => '1',
+            'id_user'=> '3',
+            'content' => 'Halo guys, apakah sudah ada yg ngerjain tugas. sulit nggak sih. '
+        ];
+        Thread::create($thread);
+
+        $likes = [
+            'id_thread' => '1',
+            'id_user' => '2',
+        ];
+        Likes::create($likes);
+
+        $reply =[
+            'id_thread' => '1',
+            'id_user' => '2',
+            'content' => 'Mudah budi, jangan kebanyakan ngeluh yaa.'
+        ];
+        Replies::create($reply);
     }
 }

@@ -13,20 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('dosens', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_thread');
             $table->unsignedBigInteger('id_user');
-            $table->string('nama');
-            $table->string('nidn');
-            $table->string('tempat')->nullable();
-            $table->string('tgl_lahir')->nullable();
-            $table->enum('jns_kelamin', ['laki-laki', 'perempuan'])->nullable();
-            $table->string('agama')->nullable();
-            $table->text('alamat');
-            $table->string('telepon')->nullable();
-            $table->string('kd_pos')->nullable();
             $table->timestamps();
 
+            $table->foreign('id_thread')->references('id')->on('threads');
             $table->foreign('id_user')->references('id')->on('users');
         });
     }
@@ -38,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dosens');
+        Schema::dropIfExists('likes');
     }
 };

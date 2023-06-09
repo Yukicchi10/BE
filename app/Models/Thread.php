@@ -6,22 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Kelas extends Authenticatable implements JWTSubject
+class Thread extends  Authenticatable implements JWTSubject
 {
     use HasFactory;
-    protected $table = 'kelas';
-    protected $guarded = [];
-
-    protected $primaryKey = 'id';
-
-    public function siswa()
+    public function likes()
     {
-        return $this->hasMany(Siswa::class, 'id', 'id');
+        return $this->hasMany(Likes::class, 'id_thread');
     }
-
-    public function materi()
+    public function replies()
     {
-        return $this->hasMany(Materi::class, 'idMateri', 'idMateri');
+        return $this->hasMany(Replies::class, 'id_thread');
     }
 
     public function getJWTIdentifier()
