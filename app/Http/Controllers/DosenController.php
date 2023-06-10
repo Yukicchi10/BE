@@ -7,6 +7,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\DosenResource;
 use App\Http\Controllers\API\BaseController;
+use App\Models\Likes;
+use App\Models\Replies;
+use App\Models\Thread;
 
 class DosenController extends BaseController
 {
@@ -139,9 +142,17 @@ class DosenController extends BaseController
     {
         try {
             $dosen = Dosen::findOrFail($id);
-            $user = User::findOrFail($dosen->id_user);
-            $user->delete();
             $dosen->delete();
+
+            $user = User::findOrFail($dosen->id_user);
+            $thread = Thread::where("id_user", $user->id)->get();
+            foreach ($thread as $key => $value) {
+                Likes::where("id_thread", $value->id)->delete();
+                Replies::where("id_thread", $value->id)->delete();
+            }
+            Likes::where("id_user", $user->id)->delete();
+            Replies::where("id_user", $user->id)->delete();
+            $user->delete();
             return $this->sendResponse($dosen, "guru deleted successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error deleting guru", $th->getMessage());

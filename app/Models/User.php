@@ -43,6 +43,14 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function thread()
+    {
+        return $this->hasMany(Thread::class, 'id_user');
+    }
+    public function likes()
+    {
+        return $this->hasMany(Likes::class, 'id_user');
+    }
 
     public function getJWTIdentifier()
     {

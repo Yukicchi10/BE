@@ -5,8 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController;
+use App\Models\Attendance;
 use App\Models\Dosen;
+use App\Models\Likes;
 use App\Models\Mahasiswa;
+use App\Models\MataPelajaran;
+use App\Models\Replies;
+use App\Models\StudentAttendance;
+use App\Models\Thread;
+use App\Models\tugas;
+use App\Models\TugasMurid;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class KelasController extends BaseController
@@ -153,6 +162,51 @@ class KelasController extends BaseController
     {
         try {
             $kelas = Kelas::findOrFail($id);
+
+            $mhs = Mahasiswa::where("id_class", $kelas->id)->get();
+            foreach ($mhs as $key => $value) {
+                $mahasiswa = Mahasiswa::findOrFail($value->id);
+                $mahasiswa->studentAttendance()->delete();
+                $mahasiswa->tugasMurid()->delete();
+                $mahasiswa->delete();
+                $user = User::findOrFail($mahasiswa->id_user);
+                $thread = Thread::where("id_user", $user->id)->get();
+                foreach ($thread as $key => $value) {
+                    Likes::where("id_thread", $value->id)->delete();
+                    Replies::where("id_thread", $value->id)->delete();
+                }
+                $user->thread()->delete();
+                $user->delete();
+            }
+
+            $mataPelajaran = MataPelajaran::where("id_class", $kelas->id)->get();
+            foreach ($mataPelajaran as $key => $value) {
+                $mapel = MataPelajaran::findOrFail($value->id);
+                $mapel->materi()->delete();
+
+                $tugas = tugas::where("id_mapel", $mapel->id)->get();
+                foreach ($tugas as $key => $value) {
+                    TugasMurid::where("id_tugas", $value->id)->delete();
+                }
+                $mapel->tugas()->delete();
+
+                $attendance = Attendance::where("id_mapel", $mapel->id)->get();
+                foreach ($attendance as $key => $value) {
+                    StudentAttendance::where("id_pertemuan", $value->id)->delete();
+                }
+                $mapel->attendance()->delete();
+
+                $thread = Thread::where("id_mapel", $mapel->id)->get();
+                foreach ($thread as $key => $value) {
+                    Likes::where("id_thread", $value->id)->delete();
+                    Replies::where("id_thread", $value->id)->delete();
+                }
+                $mapel->thread()->delete();
+
+                $mapel->delete();
+            }
+
+
             $kelas->delete();
             return $this->sendResponse($kelas, "kelas deleted successfully");
         } catch (\Throwable $th) {

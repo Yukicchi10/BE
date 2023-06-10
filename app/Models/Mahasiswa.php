@@ -52,7 +52,11 @@ class Mahasiswa extends Authenticatable implements JWTSubject
 
     public function tugasMurid()
     {
-        return $this->hasMany(TugasMurid::class, 'id_mahasiswa', 'id_mahasiswa');
+        return $this->hasMany(TugasMurid::class, 'id_mahasiswa');
+    }
+    public function studentAttendance()
+    {
+        return $this->hasMany(StudentAttendance::class, 'id_mahasiswa');
     }
 
     public function getJWTIdentifier()

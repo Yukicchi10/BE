@@ -37,7 +37,11 @@ class Dosen extends Authenticatable implements JWTSubject
 
     public function materi()
     {
-        return $this->hasMany(Materi::class, 'id', 'createdBy');
+        return $this->hasMany(materi::class, 'id');
+    }
+    public function likes()
+    {
+        return $this->hasMany(Likes::class);
     }
 
     public function getJWTIdentifier()

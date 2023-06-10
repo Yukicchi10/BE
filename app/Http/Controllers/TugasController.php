@@ -181,6 +181,7 @@ class TugasController extends BaseController
     {
         try {
             $tugas = Tugas::findOrFail($id);
+            $tugas->tugasMurid()->delete();
             $tugas->delete();
             return $this->sendResponse($tugas, "tugas deleted successfully");
         } catch (\Throwable $th) {

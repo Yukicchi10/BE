@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('mata_pelajarans', function (Blueprint $table) {
             $table->id('id');
             $table->unsignedBigInteger('id_class');
-            $table->unsignedBigInteger('id_dosen');
+            $table->unsignedBigInteger('id_dosen')->nullable();
             $table->string('nama_mapel');
             $table->string('deskripsi_mapel');
             $table->string('day');
@@ -27,7 +27,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('id_class')->references('id')->on('kelas');
-            $table->foreign('id_dosen')->references('id')->on('dosens');
+            $table->foreign('id_dosen')->references('id')->on('dosens')->onDelete('set null');
         });
     }
 

@@ -35,7 +35,20 @@ class MataPelajaran extends Authenticatable implements JWTSubject
     }
     public function materi()
     {
-        return $this->hasMany(MataPelajaran::class, 'idMapel', 'idMapel');
+        return $this->hasMany(materi::class, 'id_mapel');
+    }
+    public function tugas()
+    {
+        return $this->hasMany(tugas::class, 'id_mapel');
+    }
+    public function attendance()
+    {
+        return $this->hasMany(Attendance::class, 'id_mapel');
+    }
+
+    public function thread()
+    {
+        return $this->hasMany(Thread::class, 'id_mapel');
     }
     public function getJWTIdentifier()
     {

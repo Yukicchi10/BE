@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('materis', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('createdBy');
+            $table->unsignedBigInteger('createdBy')->nullable();
             $table->unsignedBigInteger('id_mapel');
             $table->unsignedBigInteger('id_kelas');
             $table->string('judul');
@@ -26,7 +26,8 @@ return new class extends Migration
         });
 
         Schema::table('materis', function (Blueprint $table) {
-            $table->foreign('createdBy')->references('id')->on('dosens');
+            $table->foreign('createdBy')->references('id')->on('dosens')
+            ->onDelete('set null');
             $table->foreign('id_mapel')->references('id')->on('mata_pelajarans');
             $table->foreign('id_kelas')->references('id')->on('kelas');
         });

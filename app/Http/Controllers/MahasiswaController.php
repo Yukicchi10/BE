@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\MahasiswaResource;
+use App\Models\Likes;
 use App\Models\Mahasiswa;
+use App\Models\Replies;
+use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -174,7 +177,18 @@ class MahasiswaController extends BaseController
     {
         try {
             $mahasiswa = Mahasiswa::findOrFail($id);
+            $mahasiswa->studentAttendance()->delete();
+            $mahasiswa->tugasMurid()->delete();
             $mahasiswa->delete();
+            $user = User::findOrFail($mahasiswa->id_user);
+            $thread = Thread::where("id_user", $user->id)->get();
+            foreach ($thread as $key => $value) {
+                Likes::where("id_thread", $value->id)->delete();
+                Replies::where("id_thread", $value->id)->delete();
+            }
+            $user->thread()->delete();
+            $user->delete();
+
             return $this->sendResponse($mahasiswa, "siswa deleted successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error deleting siswa", $th->getMessage());

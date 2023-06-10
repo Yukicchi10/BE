@@ -19,6 +19,7 @@ class DiscussionController extends BaseController
             $threads = Thread::where("id_mapel", $id)
                 ->join('users', 'threads.id_user', '=', 'users.id')
                 ->select('threads.*', 'users.role as role')
+                ->orderBy('threads.created_at', 'desc')
                 ->get();
 
             foreach ($threads as $key => $value) {
@@ -37,6 +38,11 @@ class DiscussionController extends BaseController
                     $value->isLike = false;
                 } else {
                     $value->isLike = true;
+                }
+                if ($user->id == $value->id_user) {
+                    $value->isMe = true;
+                } else {
+                    $value->isMe = false;
                 }
                 $replies = Replies::where("id_thread", $value->id)->count();
                 $value->likes = $likes;

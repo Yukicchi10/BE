@@ -15,6 +15,6 @@ class Tugas extends Model
 
     public function tugasMurid()
     {
-        return $this->hasMany(TugasMurid::class, 'idTugas', 'idTugas');
+        return $this->hasMany(TugasMurid::class, 'id_tugas');
     }
 }
