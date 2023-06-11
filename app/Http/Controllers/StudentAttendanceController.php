@@ -55,11 +55,25 @@ class StudentAttendanceController extends BaseController
             $absen->status = $request->status;
             $absen->save();
 
-
-
-            return $this->sendResponse($absen, 'tugas created successfully');
+            return $this->sendResponse($search, 'absen created successfully');
         } catch (\Throwable $th) {
             return $this->sendError('error creating tugas', $th->getMessage());
+        }
+    }
+    public function show($id)
+    {
+        try {
+            $mapel = MataPelajaran::findOrFail($id);
+            $mahasiswa = Mahasiswa::where("id_class", $mapel->id_class)->get();
+            $pertemuan = Attendance::where("id_mapel", $id);
+
+            foreach ($mahasiswa as $key => $value) {
+                $value->absen = StudentAttendance::where("id_mahasiswa", $value->id)
+                ->join('attendances', 'student_attendances.id_pertemuan', '=', 'attendances.id')->where("id_mapel",$id)->get();
+            }
+            return $this->sendResponse($mahasiswa, "mapel retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error retrieving mapel", $th->getMessage());
         }
     }
 }

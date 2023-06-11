@@ -91,6 +91,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/dosen/tugas/penilaian/{id}', [TugasMuridController::class, "update"])->middleware('userAkses:dosen');
 
     Route::post('/dosen/pertemuan', [StudentAttendanceController::class, "add"])->middleware('userAkses:dosen');
+    Route::get('/dosen/mapel/absen/{id}', [StudentAttendanceController::class, "show"])->middleware('userAkses:dosen');
     Route::post('/dosen/absen/siswa', [StudentAttendanceController::class, "store"])->middleware('userAkses:dosen');
     Route::get('/dosen/calendar', [CalendarController::class, "index"])->middleware('userAkses:dosen');
 
