@@ -112,6 +112,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mahasiswa/tugas', [TugasController::class, "listTugas"])->middleware('userAkses:mahasiswa');
     Route::get('/mahasiswa/tugas/{id}', [TugasController::class, "show"])->middleware('userAkses:mahasiswa');
     Route::post('/mahasiswa/tugas/upload', [TugasMuridController::class, "store"])->middleware('userAkses:mahasiswa');
+    Route::delete('/mahasiswa/tugas/{id}', [TugasController::class, "deleteTugas"])->middleware('userAkses:mahasiswa');
     Route::get('/mahasiswa/calendar', [CalendarController::class, "index"])->middleware('userAkses:mahasiswa');
     Route::get('/mahasiswa/mapel/absen/{id}', [StudentAttendanceController::class, "show"])->middleware('userAkses:mahasiswa');
 

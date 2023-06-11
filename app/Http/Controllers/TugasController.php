@@ -188,4 +188,15 @@ class TugasController extends BaseController
             return $this->sendError("error deleting tugas", $th->getMessage());
         }
     }
+    
+    public function deleteTugas(Tugas $tugas, $id)
+    {
+        try {
+            $tugas = TugasMurid::findOrFail($id);
+            $tugas->delete();
+            return $this->sendResponse($tugas, "tugas deleted successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error deleting tugas", $th->getMessage());
+        }
+    }
 }
