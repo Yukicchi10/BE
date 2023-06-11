@@ -107,4 +107,81 @@ class DiscussionController extends BaseController
             return $this->sendError('error creating thread', $th->getMessage());
         }
     }
+    public function show($id)
+    {
+
+        try {
+            $thread = Thread::join('users', 'threads.id_user', '=', 'users.id')
+                ->select('threads.*', 'users.role as role')->findOrFail($id);
+
+            if ($thread->role == 'mahasiswa') {
+                $mahasiswa = Mahasiswa::where("id_user", $thread->id_user)->first();
+                $thread->name = $mahasiswa->nama;
+            } else {
+                $dosen = Dosen::where("id_user", $thread->id_user)->first();
+                $thread->name = $dosen->nama;
+            }
+            $user = Auth::user();
+            $likes = Likes::where("id_thread", $id)->count();
+            $isLike = Likes::where("id_thread", $id)->where("id_user", $user->id)->count();
+            if ($isLike == 0) {
+                $thread->isLike = false;
+            } else {
+                $thread->isLike = true;
+            }
+            $thread->likes = $likes;
+
+            $replies = Replies::where("id_thread", $id)
+                ->join('users', 'replies.id_user', '=', 'users.id')
+                ->select('replies.*', 'users.role as role')
+                ->orderBy('replies.created_at', 'desc')
+                ->get();
+            foreach ($replies as $key => $value) {
+                if ($value->role == 'mahasiswa') {
+                    $mahasiswa = Mahasiswa::where("id_user", $value->id_user)->first();
+                    $value->name = $mahasiswa->nama;
+                } else {
+                    $dosen = Dosen::where("id_user", $value->id_user)->first();
+                    $value->name = $dosen->nama;
+                }
+                $user = Auth::user();
+
+                if ($user->id == $value->id_user) {
+                    $value->isMe = true;
+                } else {
+                    $value->isMe = false;
+                }
+            }
+            $thread->replies = $replies;
+            return $this->sendResponse($thread, "kelas retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error retrieving kelas", $th->getMessage());
+        }
+    }
+
+    public function createReply(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $replies = new Replies();
+            $replies->id_thread = $request->id_thread;
+            $replies->id_user = $user->id;
+            $replies->content = $request->content;
+            $replies->save();
+
+            return $this->sendResponse($replies, 'thread created successfully');
+        } catch (\Throwable $th) {
+            return $this->sendError('error creating thread', $th->getMessage());
+        }
+    }
+    public function destroyReplies($id)
+    {
+        try {
+            $replies = Replies::findOrFail($id);
+            $replies->delete();
+            return $this->sendResponse($replies, "thread deleted successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error deleting thread", $th->getMessage());
+        }
+    }
 }

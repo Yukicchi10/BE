@@ -95,6 +95,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/dosen/absen/siswa', [StudentAttendanceController::class, "store"])->middleware('userAkses:dosen');
     Route::get('/dosen/calendar', [CalendarController::class, "index"])->middleware('userAkses:dosen');
 
+    // Ruang diskusi
+    Route::get('/dosen/mapel/{id}/thread', [DiscussionController::class, "index"])->middleware('userAkses:dosen');
+    Route::post('/dosen/thread', [DiscussionController::class, "create"])->middleware('userAkses:dosen');
+    Route::delete('/dosen/thread/{id}', [DiscussionController::class, "destroy"])->middleware('userAkses:dosen');
+    Route::post('/dosen/thread/likes', [DiscussionController::class, "store"])->middleware('userAkses:dosen');
+    Route::get('/dosen/thread/{id}', [DiscussionController::class, "show"])->middleware('userAkses:dosen');
+    Route::post('/dosen/thread/replies', [DiscussionController::class, "createReply"])->middleware('userAkses:dosen');
+    Route::delete('/dosen/replies/{id}', [DiscussionController::class, "destroyReplies"])->middleware('userAkses:dosen');
+
     //student role
     Route::get('/auth/me', [AuthenticatedController::class, 'me'])->middleware('userAkses:mahasiswa');
     Route::get('/mahasiswa/mapel', [MataPelajaranController::class, "listSubjectStudent"])->middleware('userAkses:mahasiswa');
@@ -104,10 +113,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mahasiswa/tugas/{id}', [TugasController::class, "show"])->middleware('userAkses:mahasiswa');
     Route::post('/mahasiswa/tugas/upload', [TugasMuridController::class, "store"])->middleware('userAkses:mahasiswa');
     Route::get('/mahasiswa/calendar', [CalendarController::class, "index"])->middleware('userAkses:mahasiswa');
+    Route::get('/mahasiswa/mapel/absen/{id}', [StudentAttendanceController::class, "show"])->middleware('userAkses:mahasiswa');
 
     // Ruang diskusi
     Route::get('/mahasiswa/mapel/{id}/thread', [DiscussionController::class, "index"])->middleware('userAkses:mahasiswa');
     Route::post('/mahasiswa/thread', [DiscussionController::class, "create"])->middleware('userAkses:mahasiswa');
     Route::delete('/mahasiswa/thread/{id}', [DiscussionController::class, "destroy"])->middleware('userAkses:mahasiswa');
     Route::post('/mahasiswa/thread/likes', [DiscussionController::class, "store"])->middleware('userAkses:mahasiswa');
+    Route::get('/mahasiswa/thread/{id}', [DiscussionController::class, "show"])->middleware('userAkses:mahasiswa');
+    Route::post('/mahasiswa/thread/replies', [DiscussionController::class, "createReply"])->middleware('userAkses:mahasiswa');
+    Route::delete('/mahasiswa/replies/{id}', [DiscussionController::class, "destroyReplies"])->middleware('userAkses:mahasiswa');
 });
