@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_dosen')->nullable();
             $table->string('title');
             $table->string('description');
+            $table->string('deadline');
             $table->timestamps();
         });
 
