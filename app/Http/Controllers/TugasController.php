@@ -86,6 +86,7 @@ class TugasController extends BaseController
             $tugas->title = $request->title;
             $tugas->description = $request->description;
             $tugas->deadline = $request->deadline;
+            $tugas->deadline_time = $request->deadline_time;
             $tugas->save();
 
             return $this->sendResponse($tugas, 'tugas created successfully');
@@ -166,6 +167,7 @@ class TugasController extends BaseController
             $tugas->title = $request->title;
             $tugas->description = $request->description;
             $tugas->deadline = $request->deadline;
+            $tugas->deadline_time = $request->deadline_time;
             $tugas->save();
             return $this->sendResponse($tugas, 'tugas updated successfully');
         } catch (\Throwable $th) {

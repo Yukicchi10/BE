@@ -53,17 +53,25 @@ class TugasMuridController extends BaseController
             $user = Auth::user();
             $mahasiswa = Mahasiswa::where("id_user", $user->id)->first();
 
-            $file = $request->file('file');
-            $originalName = $file->getClientOriginalName();
+            if ($request->link) {
+                $path = $request->link;
+            } else {
+                $file = $request->file('file');
+                $originalName = $file->getClientOriginalName();
 
-            $file->move(public_path('tugas'), $originalName);
-            $path = asset('tugas/' . $originalName);
+                $file->move(public_path('tugas'), $originalName);
+                $path = asset('tugas/' . $originalName);
+            }
 
             $tugasMurid = new TugasMurid();
             $tugasMurid->id_tugas = $request->id_tugas;
             $tugasMurid->id_mahasiswa = $mahasiswa->id;
             $tugasMurid->file = $path;
-            $tugasMurid->filename = $originalName;
+            if ($request->link) {
+                $tugasMurid->filename = $request->link;
+            } else {
+                $tugasMurid->filename = $originalName;
+            }
             $tugasMurid->nilai = 0;
             $tugasMurid->save();
 

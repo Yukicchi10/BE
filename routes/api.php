@@ -115,6 +115,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/mahasiswa/tugas/{id}', [TugasController::class, "deleteTugas"])->middleware('userAkses:mahasiswa');
     Route::get('/mahasiswa/calendar', [CalendarController::class, "index"])->middleware('userAkses:mahasiswa');
     Route::get('/mahasiswa/mapel/absen/{id}', [StudentAttendanceController::class, "show"])->middleware('userAkses:mahasiswa');
+    Route::post('/mahasiswa/absen', [StudentAttendanceController::class, "absenMandiri"])->middleware('userAkses:mahasiswa');
 
     // Ruang diskusi
     Route::get('/mahasiswa/mapel/{id}/thread', [DiscussionController::class, "index"])->middleware('userAkses:mahasiswa');

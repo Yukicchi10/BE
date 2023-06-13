@@ -9,6 +9,7 @@ use App\Models\Mahasiswa;
 use App\Models\MataPelajaran;
 use App\Models\StudentAttendance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StudentAttendanceController extends BaseController
 {
@@ -60,6 +61,25 @@ class StudentAttendanceController extends BaseController
             return $this->sendError('error creating tugas', $th->getMessage());
         }
     }
+    public function absenMandiri(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $mahasiswa = Mahasiswa::where("id_user", $user->id)->first();
+            $search = StudentAttendance::where("id_pertemuan", $request->id_pertemuan)->where("id_mahasiswa", $mahasiswa->id)->first();
+
+            $absen = StudentAttendance::findOrFail($search->id);
+            $absen->id_pertemuan = $request->id_pertemuan;
+            $absen->id_mahasiswa =$mahasiswa->id;
+            $absen->status = $request->status;
+            $absen->save();
+
+            return $this->sendResponse($search, 'absen created successfully');
+        } catch (\Throwable $th) {
+            return $this->sendError('error creating tugas', $th->getMessage());
+        }
+    }
+
     public function show($id)
     {
         try {

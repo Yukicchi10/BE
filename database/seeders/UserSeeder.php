@@ -111,21 +111,24 @@ class UserSeeder extends Seeder
             'id_dosen' => '1',
             'title' => 'Tugas HTML',
             'description' => 'Buatlah essay tentang sejarah website dan HTML',
-            'deadline' => '2023-07-01 10:59:52'
+            'deadline' => '2023-07-01 10:59:52',
+            'deadline_time' => '2023-06-13T19:15:00.328Z',
         ], [
             'id_kelas' => '1',
             'id_mapel' => '1',
             'id_dosen' => '1',
             'title' => 'Tugas Pratikum ',
             'description' => 'Buatlah website sederhana, kirim laporannya dalam bentuk Pdf',
-            'deadline' => '2023-07-01 10:59:52'
+            'deadline' => '2023-07-01 10:59:52',
+            'deadline_time' => '2023-06-13T19:15:00.328Z',
         ], [
             'id_kelas' => '1',
             'id_mapel' => '1',
             'id_dosen' => '1',
             'title' => 'Tugas Framework',
             'description' => 'Sebutkan dan Jelaskan Jenis Jenis Framework dalam pengembangan website!',
-            'deadline' => '2023-07-11 10:59:52'
+            'deadline' => '2023-07-11 10:59:52',
+            'deadline_time' => '2023-06-13T19:15:00.328Z',
         ]];
 
         foreach ($tugas as $key => $val) {
