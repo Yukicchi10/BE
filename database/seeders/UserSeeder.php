@@ -33,11 +33,11 @@ class UserSeeder extends Seeder
             'role' => 'admin',
             'password' => bcrypt('123456')
         ], [
-            'email' => 'novi@mail.com',
+            'email' => 'yopinugraha@mail.com',
             'role' => 'dosen',
             'password' => bcrypt('123456')
         ], [
-            'email' => 'budi@mail.com',
+            'email' => 'rikaamelia19@mail.com',
             'role' => 'mahasiswa',
             'password' => bcrypt('123456')
         ],];
@@ -47,11 +47,11 @@ class UserSeeder extends Seeder
 
         $dosen = [
             'id_user' => '2',
-            'nama' => 'Novita Citra Rahayu, S.Kom, M.T',
+            'nama' => 'Yopi Nugraha, M.Kom',
             'nidn' => '0001075603432',
-            'tempat' => 'Jakarta',
+            'tempat' => 'Garut',
             'tgl_lahir' => '1995-02-01 10:59:52',
-            'jns_kelamin' => 'perempuan',
+            'jns_kelamin' => 'laki-laki',
             'agama' => 'Islam',
             'alamat' => 'Jl. Gajahmada No. 47 Ketintang, Surabaya Jawa Timur',
             'telepon' => '085987123564',
@@ -60,25 +60,25 @@ class UserSeeder extends Seeder
         Dosen::create($dosen);
 
         $kelas = [
-            'nama_kelas' => 'Teknik Informatika',
-            'angkatan' => '2018'
+            'nama_kelas' => 'Sistem Informasi B',
+            'angkatan' => '2019'
         ];
         Kelas::create($kelas);
 
         $mahasiswa = [
             'id_user' => '3',
             'id_class' => '1',
-            'nama' => 'Budi yanto',
+            'nama' => 'Rika Amelia',
             'nim' => '2018749273',
-            'tempat' => 'Bandung',
-            'tgl_lahir' => '2000-12-11 10:59:52',
-            'jns_kelamin' => 'laki-laki',
+            'tempat' => 'Garut',
+            'tgl_lahir' => '2001-05-14 10:59:52',
+            'jns_kelamin' => 'perempuan',
             'agama' => 'Islam',
-            'alamat' => 'Jl. Hayam wuruk No. 5 Gayungan, Surabaya Jawa Timur',
+            'alamat' => 'Kp.Papandak Desa Sukamenak',
             'telepon' => '085987125564',
             'kd_pos' => '78235',
-            'nama_ayah' => 'Susanto',
-            'nama_ibu' => 'Indah'
+            'nama_ayah' => 'Jajang',
+            'nama_ibu' => 'Oneng'
         ];
         Mahasiswa::create($mahasiswa);
 
@@ -188,7 +188,7 @@ class UserSeeder extends Seeder
         $reply =[
             'id_thread' => '1',
             'id_user' => '2',
-            'content' => 'Mudah budi, jangan kebanyakan ngeluh yaa.'
+            'content' => 'Mudah Rika, jangan kebanyakan ngeluh yaa.'
         ];
         Replies::create($reply);
     }
