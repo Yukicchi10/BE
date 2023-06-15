@@ -37,7 +37,15 @@ class UserSeeder extends Seeder
             'role' => 'dosen',
             'password' => bcrypt('123456')
         ], [
+            'email' => 'dinarrahayu@mail.com',
+            'role' => 'dosen',
+            'password' => bcrypt('123456')
+        ], [
             'email' => 'rikaamelia19@mail.com',
+            'role' => 'mahasiswa',
+            'password' => bcrypt('123456')
+        ], [
+            'email' => 'farizsalman19@mail.com',
             'role' => 'mahasiswa',
             'password' => bcrypt('123456')
         ],];
@@ -59,6 +67,20 @@ class UserSeeder extends Seeder
         ];
         Dosen::create($dosen);
 
+        $dosen = [
+            'id_user' => '3',
+            'nama' => 'Dinar Rahayu, M.Kom',
+            'nidn' => '0001075603432',
+            'tempat' => 'Garut',
+            'tgl_lahir' => '1995-02-01 10:59:52',
+            'jns_kelamin' => 'perempuan',
+            'agama' => 'Islam',
+            'alamat' => 'Jl. Gajahmada No. 47 Ketintang, Surabaya Jawa Timur',
+            'telepon' => '085987123564',
+            'kd_pos' => '78254',
+        ];
+        Dosen::create($dosen);
+
         $kelas = [
             'nama_kelas' => 'Sistem Informasi B',
             'angkatan' => '2019'
@@ -66,7 +88,7 @@ class UserSeeder extends Seeder
         Kelas::create($kelas);
 
         $mahasiswa = [
-            'id_user' => '3',
+            'id_user' => '4',
             'id_class' => '1',
             'nama' => 'Rika Amelia',
             'nim' => '2018749273',
@@ -81,6 +103,24 @@ class UserSeeder extends Seeder
             'nama_ibu' => 'Oneng'
         ];
         Mahasiswa::create($mahasiswa);
+
+        $mahasiswa = [
+            'id_user' => '5',
+            'id_class' => '1',
+            'nama' => 'Fariz Salman W',
+            'nim' => '2018749273',
+            'tempat' => 'Garut',
+            'tgl_lahir' => '2001-05-14 10:59:52',
+            'jns_kelamin' => 'laki-laki',
+            'agama' => 'Islam',
+            'alamat' => 'Jl. Pataruman',
+            'telepon' => '085987125564',
+            'kd_pos' => '78235',
+            'nama_ayah' => 'Dudi',
+            'nama_ibu' => 'Ani'
+        ];
+        Mahasiswa::create($mahasiswa);
+
 
         $mataKuliah = [
             'id_class' => '1',
