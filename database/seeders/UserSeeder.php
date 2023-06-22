@@ -205,6 +205,13 @@ class UserSeeder extends Seeder
         ];
         StudentAttendance::create($studentAttendance);
 
+        $studentAttendance = [
+            'id_pertemuan' => '1',
+            'id_mahasiswa' => '2',
+            'status' => 'Hadir',
+        ];
+        StudentAttendance::create($studentAttendance);
+
         $calendar = [
             'title' => 'Ujian Akhir Semester',
             'start' => '2023-06-19 07:01:04',
@@ -214,7 +221,7 @@ class UserSeeder extends Seeder
 
         $thread = [
             'id_mapel' => '1',
-            'id_user'=> '3',
+            'id_user'=> '4',
             'content' => 'Halo guys, apakah sudah ada yg ngerjain tugas. sulit nggak sih. '
         ];
         Thread::create($thread);
@@ -229,6 +236,13 @@ class UserSeeder extends Seeder
             'id_thread' => '1',
             'id_user' => '2',
             'content' => 'Mudah Rika, jangan kebanyakan ngeluh yaa.'
+        ];
+        Replies::create($reply);
+
+        $reply =[
+            'id_thread' => '1',
+            'id_user' => '5',
+            'content' => 'Sangat mudah Rika, Semangat!'
         ];
         Replies::create($reply);
     }
